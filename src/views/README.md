@@ -6,6 +6,8 @@ Pages will use view functions to render program state and update the UI.
 
 VIEW functions will _never_ ...
 
+blalbal
+
 - read from the DOM
   - they will create _new_ DOM elements
 - write to the DOM
