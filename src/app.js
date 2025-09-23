@@ -1,10 +1,48 @@
 import { quizData } from './data.js';
 import { initWelcomePage } from './pages/welcomePage.js';
 
+/**
+ * Initialize app
+ * - Resets quiz state
+ * - Shows welcome page
+ */
 const loadApp = () => {
-  quizData.currentQuestionIndex = 0;
-
+  resetQuizState();
   initWelcomePage();
 };
 
+/**
+ * Reset quiz state
+ * - currentQuestionIndex back to 0
+ * - clears all selected answers
+ */
+export const resetQuizState = () => {
+  quizData.currentQuestionIndex = 0;
+  quizData.questions.forEach((q) => (q.selected = null));
+};
+
+/**
+ * Move to next question
+ * - returns true if next question exists
+ * - returns false if quiz ended
+ */
+export const goToNextQuestion = () => {
+  if (quizData.currentQuestionIndex < quizData.questions.length - 1) {
+    quizData.currentQuestionIndex += 1;
+    return true;
+  }
+  return false;
+};
+
+/**
+ * Calculate current score
+ */
+export const calculateScore = () => {
+  return quizData.questions.reduce((score, q) => {
+    if (q.selected === q.correct) return score + 1;
+    return score;
+  }, 0);
+};
+
+// Run app on page load
 window.addEventListener('load', loadApp);
