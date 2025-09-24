@@ -7,14 +7,12 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
-import { resetScores,
+import {
+  resetScores,
   incrementCorrect,
   incrementIncorrect,
-  scoreCorrect,
-  scoreIncorrect,
   maxQuestions,
-  renderScore
- } from './score.js';
+} from './score.js';
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -33,6 +31,11 @@ export const initQuestionPage = () => {
     scoreContainer.id = 'score-counter';
     userInterface.appendChild(scoreContainer);
   }
+
+  const renderScore = () => {
+    scoreContainer.innerHTML = `Correct: ${quizData.scoreCorrect} | Incorrect: ${quizData.scoreIncorrect}`;
+  };
+
   //show scores
   renderScore();
 
@@ -103,7 +106,10 @@ export const initQuestionPage = () => {
 };
 
 const nextQuestion = () => {
+  // update the state
   quizData.currentQuestionIndex += 1;
+
+  // rerender the UI with the state
   initQuestionPage();
 };
 

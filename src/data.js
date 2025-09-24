@@ -8,6 +8,8 @@
 */
 
 export const quizData = {
+  scoreCorrect: 0, // number of correct answers
+  scoreIncorrect: 0, // number of incorrect answers
   currentQuestionIndex: 0,
   // All quiz questions
   questions: [
