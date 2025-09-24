@@ -2,6 +2,7 @@ import {
   ANSWERS_LIST_ID,
   NEXT_QUESTION_BUTTON_ID,
   USER_INTERFACE_ID,
+    AVOID_QUESTION_BUTTON_ID,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
@@ -75,10 +76,22 @@ export const initQuestionPage = () => {
   document
     .getElementById(NEXT_QUESTION_BUTTON_ID)
     .addEventListener('click', nextQuestion);
+
+   document
+    .getElementById(AVOID_QUESTION_BUTTON_ID)
+    .addEventListener('click', avoidQuestion);  
 };
 
 
 const nextQuestion = () => {
   quizData.currentQuestionIndex += 1;
   initQuestionPage();
+};
+
+const avoidQuestion = () => {
+  // go to the next question 
+  quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
+  console.log("Question avoided")
+
+  initQuestionPage();// display the new question 
 };
