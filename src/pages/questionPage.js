@@ -33,7 +33,7 @@ export const initQuestionPage = () => {
     scoreContainer.id = 'score-counter';
     userInterface.appendChild(scoreContainer);
   }
-
+  //show scores
   renderScore();
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
@@ -71,8 +71,12 @@ export const initQuestionPage = () => {
 
       if (isCorrect) {
         clickedLi.style.backgroundColor = 'green';
+        incrementCorrect(); // update correct score
+        renderScore(); // show updated scores
       } else {
         clickedLi.style.backgroundColor = 'red';
+        incrementIncorrect(); // update incorrect score
+        renderScore(); // show updated scores
 
         //highlight the correct answer
         allListItems.forEach((li) => {
@@ -107,6 +111,6 @@ const avoidQuestion = () => {
   // go to the next question
   quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
   console.log('Question avoided');
-
+  incrementIncorrect(); // count as incorrect
   initQuestionPage(); // display the new question
 };
