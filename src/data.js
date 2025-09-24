@@ -9,6 +9,7 @@
 
 export const quizData = {
   currentQuestionIndex: 0,
+    userName: '', //store user name 
   // All quiz questions
   questions: [
     // EASY

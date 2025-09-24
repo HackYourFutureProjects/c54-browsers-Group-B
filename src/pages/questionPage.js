@@ -7,6 +7,8 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
+import { showEndPage } from './endPage.js';
+
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -17,6 +19,13 @@ const storeAnswer = (questionIndex, selectedOption) => {
 export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
+
+// Initializes the question page by rendering the current question and answers
+// Handles click events on answers to store selection and show correct/incorrect feedback
+  if (quizData.currentQuestionIndex >= quizData.questions.length) {
+  showEndPage(); // Show the end-of-quiz page if all questions are answered
+  return;
+  }
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
@@ -92,3 +101,4 @@ const avoidQuestion = () => {
 
   initQuestionPage(); // display the new question
 };
+
