@@ -28,9 +28,45 @@ export const initQuestionPage = () => {
   for (const [key, answerText] of Object.entries(currentQuestion.answers)) {
     const answerElement = createAnswerElement(key, answerText);
 
-    //  Store answer when clicked
-    answerElement.addEventListener('click', () => {
+    // tag each <li> with its answer key 
+    answerElement.dataset.key = key;
+
+    // Store answer when clicked
+    answerElement.addEventListener('click', (event) => {
+      const clickedLi = event.currentTarget;
+      const selectedKey = clickedLi.dataset.key;
+
+      // store selection
       storeAnswer(quizData.currentQuestionIndex, key);
+
+      // get all <li> within this answers list only
+      const allListItems = answersListElement.querySelectorAll('li');
+
+      // reset any previous coloring
+      allListItems.forEach(li => {
+        li.style.backgroundColor = '';
+      });
+
+      // check if user clicked the correct answer
+      const isCorrect = selectedKey === currentQuestion.correct;
+
+      if (isCorrect) {
+        clickedLi.style.backgroundColor = 'green';
+      } else {
+        clickedLi.style.backgroundColor = 'red';
+
+        //highlight the correct answer
+        allListItems.forEach(li => {
+          if (li.dataset.key === currentQuestion.correct) {
+            li.style.backgroundColor = 'green';
+
+          }
+        });
+        
+      }
+      allListItems.forEach(li => {
+    li.style.pointerEvents = 'none';
+  });
     });
 
     answersListElement.appendChild(answerElement);
@@ -40,6 +76,7 @@ export const initQuestionPage = () => {
     .getElementById(NEXT_QUESTION_BUTTON_ID)
     .addEventListener('click', nextQuestion);
 };
+
 
 const nextQuestion = () => {
   quizData.currentQuestionIndex += 1;
