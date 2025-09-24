@@ -8,15 +8,24 @@ import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 
-// Step 1: Store selected answer
-const storeAnswer = (questionIndex, selectedOption) => {
-  quizData.questions[questionIndex].selected = selectedOption;
-  console.log(`Question ${questionIndex + 1} selected:`, selectedOption);
-};
-
 export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
+
+  //container for scores
+  let scoreContainer = document.getElementById('score-counter');
+  if (!scoreContainer) {
+    scoreContainer = document.createElement('div');
+    scoreContainer.id = 'score-counter';
+    userInterface.appendChild(scoreContainer);
+  }
+
+  const renderScore = () => {
+    scoreContainer.innerHTML = `Correct: ${quizData.scoreCorrect} | Incorrect: ${quizData.scoreIncorrect}`;
+  };
+
+  //show scores
+  renderScore();
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
@@ -38,7 +47,7 @@ export const initQuestionPage = () => {
       const selectedKey = clickedLi.dataset.key;
 
       // store selection
-      storeAnswer(quizData.currentQuestionIndex, key);
+      quizData.storeAnswer(key);
 
       // get all <li> within this answers list only
       const allListItems = answersListElement.querySelectorAll('li');
@@ -53,8 +62,12 @@ export const initQuestionPage = () => {
 
       if (isCorrect) {
         clickedLi.style.backgroundColor = 'green';
+        quizData.incrementCorrect(); // update correct score
+        renderScore(); // show updated scores
       } else {
         clickedLi.style.backgroundColor = 'red';
+        quizData.incrementIncorrect(); // update incorrect score
+        renderScore(); // show updated scores
 
         //highlight the correct answer
         allListItems.forEach((li) => {
@@ -81,7 +94,10 @@ export const initQuestionPage = () => {
 };
 
 const nextQuestion = () => {
+  // update the state
   quizData.currentQuestionIndex += 1;
+
+  // rerender the UI with the state
   initQuestionPage();
 };
 
@@ -89,6 +105,6 @@ const avoidQuestion = () => {
   // go to the next question
   quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
   console.log('Question avoided');
-
+  quizData.incrementIncorrect(); // count as incorrect
   initQuestionPage(); // display the new question
 };

@@ -8,6 +8,8 @@
 */
 
 export const quizData = {
+  scoreCorrect: 0, // number of correct answers
+  scoreIncorrect: 0, // number of incorrect answers
   currentQuestionIndex: 0,
   // All quiz questions
   questions: [
@@ -154,6 +156,13 @@ export const quizData = {
     },
   ],
   answers: [],
+
+  // Step 1: Store selected answer
+  storeAnswer(selectedOption) {
+    quizData.questions[this.currentQuestionIndex].selected = selectedOption;
+    console.log(`Question ${this.currentQuestionIndex + 1} selected:`, selectedOption);
+  },
+
   // Save current answers to localStorage
   saveAnswers(answers) {
     localStorage.setItem('answers', JSON.stringify(answers));
@@ -177,6 +186,24 @@ export const quizData = {
       if (this.answers[i] === q.correct) score++;
     });
     return score;
+  },
+
+  incrementCorrect() {
+    this.scoreCorrect++;
+  },
+
+  incrementIncorrect() {
+    this.scoreIncorrect++;
+  },
+
+  resetScores() {
+    this.scoreCorrect = 0;
+    this.scoreIncorrect = 0;
+  },
+
+  setScores(correct, incorrect) {
+    this.scoreCorrect = correct;
+    this.scoreIncorrect = incorrect;
   },
 };
 
