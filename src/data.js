@@ -156,6 +156,7 @@ export const quizData = {
     },
   ],
   answers: [],
+
   // Save current answers to localStorage
   saveAnswers(answers) {
     localStorage.setItem('answers', JSON.stringify(answers));
@@ -179,6 +180,24 @@ export const quizData = {
       if (this.answers[i] === q.correct) score++;
     });
     return score;
+  },
+
+  incrementCorrect() {
+    this.scoreCorrect++;
+  },
+
+  incrementIncorrect() {
+    this.scoreIncorrect++;
+  },
+
+  resetScores() {
+    this.scoreCorrect = 0;
+    this.scoreIncorrect = 0;
+  },
+
+  setScores(correct, incorrect) {
+    this.scoreCorrect = correct;
+    this.scoreIncorrect = incorrect;
   },
 };
 

@@ -7,12 +7,6 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
-import {
-  resetScores,
-  incrementCorrect,
-  incrementIncorrect,
-  maxQuestions,
-} from './score.js';
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -74,11 +68,11 @@ export const initQuestionPage = () => {
 
       if (isCorrect) {
         clickedLi.style.backgroundColor = 'green';
-        incrementCorrect(); // update correct score
+        quizData.incrementCorrect(); // update correct score
         renderScore(); // show updated scores
       } else {
         clickedLi.style.backgroundColor = 'red';
-        incrementIncorrect(); // update incorrect score
+        quizData.incrementIncorrect(); // update incorrect score
         renderScore(); // show updated scores
 
         //highlight the correct answer
@@ -117,6 +111,6 @@ const avoidQuestion = () => {
   // go to the next question
   quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
   console.log('Question avoided');
-  incrementIncorrect(); // count as incorrect
+  quizData.incrementIncorrect(); // count as incorrect
   initQuestionPage(); // display the new question
 };
