@@ -8,12 +8,6 @@ import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 
-// Step 1: Store selected answer
-const storeAnswer = (questionIndex, selectedOption) => {
-  quizData.questions[questionIndex].selected = selectedOption;
-  console.log(`Question ${questionIndex + 1} selected:`, selectedOption);
-};
-
 export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
@@ -53,7 +47,7 @@ export const initQuestionPage = () => {
       const selectedKey = clickedLi.dataset.key;
 
       // store selection
-      storeAnswer(quizData.currentQuestionIndex, key);
+      quizData.storeAnswer(key);
 
       // get all <li> within this answers list only
       const allListItems = answersListElement.querySelectorAll('li');

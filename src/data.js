@@ -157,6 +157,12 @@ export const quizData = {
   ],
   answers: [],
 
+  // Step 1: Store selected answer
+  storeAnswer(selectedOption) {
+    quizData.questions[this.currentQuestionIndex].selected = selectedOption;
+    console.log(`Question ${this.currentQuestionIndex + 1} selected:`, selectedOption);
+  },
+
   // Save current answers to localStorage
   saveAnswers(answers) {
     localStorage.setItem('answers', JSON.stringify(answers));
