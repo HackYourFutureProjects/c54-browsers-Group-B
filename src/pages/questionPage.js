@@ -7,6 +7,14 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
+import { resetScores,
+  incrementCorrect,
+  incrementIncorrect,
+  scoreCorrect,
+  scoreIncorrect,
+  maxQuestions,
+  renderScore
+ } from './score.js';
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -17,6 +25,16 @@ const storeAnswer = (questionIndex, selectedOption) => {
 export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
+
+  //container for scores
+  let scoreContainer = document.getElementById('score-counter');
+  if (!scoreContainer) {
+    scoreContainer = document.createElement('div');
+    scoreContainer.id = 'score-counter';
+    userInterface.appendChild(scoreContainer);
+  }
+
+  renderScore();
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
