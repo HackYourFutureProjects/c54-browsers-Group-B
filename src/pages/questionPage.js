@@ -2,7 +2,7 @@ import {
   ANSWERS_LIST_ID,
   NEXT_QUESTION_BUTTON_ID,
   USER_INTERFACE_ID,
-    AVOID_QUESTION_BUTTON_ID,
+  AVOID_QUESTION_BUTTON_ID,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
@@ -29,7 +29,7 @@ export const initQuestionPage = () => {
   for (const [key, answerText] of Object.entries(currentQuestion.answers)) {
     const answerElement = createAnswerElement(key, answerText);
 
-    // tag each <li> with its answer key 
+    // tag each <li> with its answer key
     answerElement.dataset.key = key;
 
     // Store answer when clicked
@@ -44,7 +44,7 @@ export const initQuestionPage = () => {
       const allListItems = answersListElement.querySelectorAll('li');
 
       // reset any previous coloring
-      allListItems.forEach(li => {
+      allListItems.forEach((li) => {
         li.style.backgroundColor = '';
       });
 
@@ -57,17 +57,15 @@ export const initQuestionPage = () => {
         clickedLi.style.backgroundColor = 'red';
 
         //highlight the correct answer
-        allListItems.forEach(li => {
+        allListItems.forEach((li) => {
           if (li.dataset.key === currentQuestion.correct) {
             li.style.backgroundColor = 'green';
-
           }
         });
-        
       }
-      allListItems.forEach(li => {
-    li.style.pointerEvents = 'none';
-  });
+      allListItems.forEach((li) => {
+        li.style.pointerEvents = 'none';
+      });
     });
 
     answersListElement.appendChild(answerElement);
@@ -77,11 +75,10 @@ export const initQuestionPage = () => {
     .getElementById(NEXT_QUESTION_BUTTON_ID)
     .addEventListener('click', nextQuestion);
 
-   document
+  document
     .getElementById(AVOID_QUESTION_BUTTON_ID)
-    .addEventListener('click', avoidQuestion);  
+    .addEventListener('click', avoidQuestion);
 };
-
 
 const nextQuestion = () => {
   quizData.currentQuestionIndex += 1;
@@ -89,9 +86,9 @@ const nextQuestion = () => {
 };
 
 const avoidQuestion = () => {
-  // go to the next question 
+  // go to the next question
   quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
-  console.log("Question avoided")
+  console.log('Question avoided');
 
-  initQuestionPage();// display the new question 
+  initQuestionPage(); // display the new question
 };
