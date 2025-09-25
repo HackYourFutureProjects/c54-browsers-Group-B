@@ -33,6 +33,9 @@ export const goToNextQuestion = () => {
 export const resetQuizState = () => {
   quizData.currentQuestionIndex = 0;
   quizData.questions.forEach((q) => (q.selected = null));
+  quizData.score = 0;
+  console.log('score: ', quizData.score);
+  initWelcomePage();
 };
 
 /**
