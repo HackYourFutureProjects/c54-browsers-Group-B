@@ -14,8 +14,9 @@
   --text-strong: #eaf7ea;
   --text-muted: #cfe8d0;
   --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.20);
-  --glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), 0 2px 10px rgba(0, 0, 0, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.35),
+    0 2px 10px rgba(0, 0, 0, 0.25);
 
   /* Dynamic gradient (JS updates --bg-gradient) */
   --bg-gradient: linear-gradient(135deg, #2e7d32 0%, #43a047 50%, #66bb6a 100%);
@@ -28,13 +29,15 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    'Helvetica Neue', Arial, sans-serif;
   color: var(--text-strong);
   display: grid;
   place-items: center;
@@ -52,8 +55,16 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(1000px 600px at 10% 10%, rgba(255,255,255,0.06), transparent 60%),
-              radial-gradient(900px 500px at 90% 90%, rgba(0,0,0,0.18), transparent 65%);
+  background: radial-gradient(
+      1000px 600px at 10% 10%,
+      rgba(255, 255, 255, 0.06),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 90% 90%,
+      rgba(0, 0, 0, 0.18),
+      transparent 65%
+    );
 }
 
 /* Centered quiz card (glassmorphism) */
@@ -63,13 +74,17 @@ body::after {
   overflow: hidden;
   backdrop-filter: blur(14px) saturate(120%);
   -webkit-backdrop-filter: blur(14px) saturate(120%);
-  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.06)
+  );
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: 22px;
   padding: clamp(18px, 5vw, 28px);
   transform: translateY(0);
-  animation: cardEnter 640ms cubic-bezier(.2,.75,.25,1) both;
+  animation: cardEnter 640ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
 }
 
 /* Page container interior scroll area if needed */
@@ -87,7 +102,7 @@ h1 {
   letter-spacing: 0.3px;
   font-size: clamp(1.6rem, 3.5vw, 2.2rem);
   color: var(--text-strong);
-  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
   position: relative;
   line-height: 1.2;
 }
@@ -96,7 +111,7 @@ h1 {
 h1::before {
   content: '🥗';
   margin-right: 10px;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
   transform: translateY(1px) rotate(-8deg);
   display: inline-block;
 }
@@ -108,29 +123,36 @@ p {
 }
 
 /* ========== Inputs ========== */
-input[type="text"],
-input[type="search"],
-input[type="email"] {
+input[type='text'],
+input[type='search'],
+input[type='email'] {
   width: 100%;
   padding: 14px 16px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0.06)
+  );
   color: var(--text-strong);
   outline: none;
-  transition: transform 160ms ease, box-shadow 200ms ease, border-color 200ms ease;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 0 rgba(0,0,0,0.15);
+  transition: transform 160ms ease, box-shadow 200ms ease,
+    border-color 200ms ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 1px 0 rgba(0, 0, 0, 0.15);
   margin: 10px 0 6px;
 }
 
 input::placeholder {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 input:focus {
   transform: translateY(-1px) scale(1.02);
   border-color: rgba(102, 187, 106, 0.7);
-  box-shadow: 0 0 0 6px rgba(102,187,106,0.12), 0 14px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 0 0 6px rgba(102, 187, 106, 0.12),
+    0 14px 30px rgba(0, 0, 0, 0.25);
 }
 
 /* ========== Answer List ========== */
@@ -147,21 +169,26 @@ ul li {
   border-radius: 14px;
   padding: 12px 14px;
   background: linear-gradient(135deg, #fff59d, #fff176); /* Lemon yellow base */
-  border: 1px solid rgba(255,255,255,0.20);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #3e2723; /* dark for contrast on lemon */
   cursor: pointer;
   user-select: none;
   font-weight: 600;
   letter-spacing: 0.25px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-  transition: transform 140ms ease, box-shadow 180ms ease, background 240ms ease, filter 200ms ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 140ms ease, box-shadow 180ms ease, background 240ms ease,
+    filter 200ms ease;
   will-change: transform;
 }
 
 ul li:hover {
-  background: linear-gradient(135deg, #ffeb3b, #ffee58); /* brighter lemon on hover */
+  background: linear-gradient(
+    135deg,
+    #ffeb3b,
+    #ffee58
+  ); /* brighter lemon on hover */
   transform: translateY(-2px) scale(1.015) rotate(-0.25deg);
-  box-shadow: 0 10px 24px rgba(255,235,59,0.35);
+  box-shadow: 0 10px 24px rgba(255, 235, 59, 0.35);
   filter: brightness(1.04);
 }
 
@@ -170,8 +197,8 @@ ul li:active {
 }
 
 /* Show check/cross icons when inline colors are applied by logic */
-ul li[style*="green"]::after,
-ul li[style*="red"]::after {
+ul li[style*='green']::after,
+ul li[style*='red']::after {
   content: attr(data-badge);
   position: absolute;
   right: 12px;
@@ -180,29 +207,39 @@ ul li[style*="red"]::after {
   font-size: 18px;
 }
 
-ul li[style*="green"] {
+ul li[style*='green'] {
   /* Harmonize inline green with our theme, keep logic intact */
-  background: linear-gradient(180deg, rgba(46,125,50,0.9), rgba(67,160,71,0.85)) !important;
-  border-color: rgba(102,187,106,0.75);
-  box-shadow: 0 0 0 2px rgba(102,187,106,0.35), 0 16px 34px rgba(46,125,50,0.45);
+  background: linear-gradient(
+    180deg,
+    rgba(46, 125, 50, 0.9),
+    rgba(67, 160, 71, 0.85)
+  ) !important;
+  border-color: rgba(102, 187, 106, 0.75);
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.35),
+    0 16px 34px rgba(46, 125, 50, 0.45);
 }
 
-ul li[style*="green"]::after {
+ul li[style*='green']::after {
   content: '✓';
   color: #e8f5e9;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
 }
 
-ul li[style*="red"] {
-  background: linear-gradient(180deg, rgba(244,67,54,0.85), rgba(211,47,47,0.85)) !important;
-  border-color: rgba(244,67,54,0.6);
-  box-shadow: 0 0 0 2px rgba(244,67,54,0.25), 0 16px 34px rgba(211,47,47,0.35);
+ul li[style*='red'] {
+  background: linear-gradient(
+    180deg,
+    rgba(244, 67, 54, 0.85),
+    rgba(211, 47, 47, 0.85)
+  ) !important;
+  border-color: rgba(244, 67, 54, 0.6);
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.25),
+    0 16px 34px rgba(211, 47, 47, 0.35);
 }
 
-ul li[style*="red"]::after {
+ul li[style*='red']::after {
   content: '✕';
   color: #fff3f3;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
 }
 
 /* ========== Buttons ========== */
@@ -223,8 +260,10 @@ button {
   border-radius: 14px;
   cursor: pointer;
   text-transform: capitalize;
-  box-shadow: 0 6px 20px rgba(46,125,50,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
-  transition: transform 160ms ease, box-shadow 220ms ease, background-position 260ms ease, filter 200ms ease;
+  box-shadow: 0 6px 20px rgba(46, 125, 50, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 160ms ease, box-shadow 220ms ease,
+    background-position 260ms ease, filter 200ms ease;
 }
 
 button::before {
@@ -236,7 +275,8 @@ button::before {
 button:hover {
   background-position: 100% 0%;
   transform: translateY(-2px) rotate(-0.35deg) scale(1.02);
-  box-shadow: 0 14px 32px rgba(46,125,50,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow: 0 14px 32px rgba(46, 125, 50, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   filter: saturate(1.05);
 }
 
@@ -267,14 +307,18 @@ button:active {
   border-radius: 999px;
   transform: scale(0);
   opacity: 0.6;
-  background: radial-gradient(circle closest-side, rgba(255,255,255,0.45), rgba(255,255,255,0) 70%);
+  background: radial-gradient(
+    circle closest-side,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0) 70%
+  );
   animation: ripple 650ms ease-out forwards;
   mix-blend-mode: screen;
 }
 
 /* ========== Page Transition Helpers ========== */
 .fade-in {
-  animation: fadeInUp 420ms cubic-bezier(.2,.75,.25,1) both;
+  animation: fadeInUp 420ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
 }
 .fade-out {
   animation: fadeOutDown 320ms ease both;
@@ -298,14 +342,18 @@ button:active {
 }
 .scrollable::-webkit-scrollbar-track,
 .centered::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 999px;
 }
 .scrollable::-webkit-scrollbar-thumb,
 .centered::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(102,187,106,0.6), rgba(67,160,71,0.6));
+  background: linear-gradient(
+    180deg,
+    rgba(102, 187, 106, 0.6),
+    rgba(67, 160, 71, 0.6)
+  );
   border-radius: 999px;
-  border: 2px solid rgba(255,255,255,0.15);
+  border: 2px solid rgba(255, 255, 255, 0.15);
 }
 
 /* ========== Responsive ========== */
@@ -321,52 +369,91 @@ button:active {
 
 /* ========== Keyframes ========== */
 @keyframes bgFloat {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes cardEnter {
-  0% { transform: translateY(12px) scale(0.985); opacity: 0; }
-  60% { transform: translateY(-2px) scale(1.005); opacity: 1; }
-  100% { transform: translateY(0) scale(1); }
+  0% {
+    transform: translateY(12px) scale(0.985);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-2px) scale(1.005);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(10px) scale(0.995); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes fadeOutDown {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(6px) scale(0.995); }
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.995);
+  }
 }
 
 @keyframes ripple {
-  to { transform: scale(1); opacity: 0; }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 
 /* Gentle animated salad gradient shift */
 @keyframes saladShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Soft up/down float for the glass card */
 @keyframes cardFloat {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-8px); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
 }
 
 /* ===== Light Surface Overrides (when background is very light/near white) ===== */
 body.light-surface h1 {
-  color: #000;           /* Make question title text black for contrast */
-  text-shadow: none;     /* Remove shadow on light bg */
+  color: #000; /* Make question title text black for contrast */
+  text-shadow: none; /* Remove shadow on light bg */
 }
 
 body.light-surface button {
-  color: #000 !important;  /* Make all button labels black for contrast */
+  color: #000 !important; /* Make all button labels black for contrast */
   text-shadow: none;
 }
 
@@ -385,15 +472,14 @@ body.light-surface button {
   animation: incorrectShake 0.45s ease;
 }
 
-
 /* ===== Salad Quiz Landing Page (scoped, non-destructive) ===== */
 .landing {
   position: relative;
-  min-height: 100vh;              /* Full viewport height */
-  display: flex;                  /* Center content */
+  min-height: 100vh; /* Full viewport height */
+  display: flex; /* Center content */
   align-items: center;
   justify-content: center;
-  isolation: isolate;             /* Card shadows above background layers */
+  isolation: isolate; /* Card shadows above background layers */
   margin: 0;
   padding: 0;
 }
@@ -404,7 +490,7 @@ body.light-surface button {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to bottom, #4CAF50 0%, #2E7D32 100%);
+  background: linear-gradient(to bottom, #4caf50 0%, #2e7d32 100%);
   background-size: 200% 200%;
   animation: saladShift 28s ease-in-out infinite;
 }
@@ -416,24 +502,37 @@ body.light-surface button {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(800px 500px at 20% 10%, rgba(255,255,255,0.06), transparent 60%),
-    radial-gradient(900px 600px at 80% 90%, rgba(0,0,0,0.18), transparent 65%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 2px); /* ultra subtle grain */
+  background: radial-gradient(
+      800px 500px at 20% 10%,
+      rgba(255, 255, 255, 0.06),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 80% 90%,
+      rgba(0, 0, 0, 0.18),
+      transparent 65%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.015) 0,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 2px
+    ); /* ultra subtle grain */
 }
 
 /* Main card container with glassmorphism */
 .landing .card {
-  width: clamp(400px, 90vw, 500px);        /* 400-500px responsive range */
-  padding: 40px;                           /* Required padding */
-  border-radius: 20px;                     /* Rounded corners */
-  background: rgba(255, 255, 255, 0.10);   /* Glass background */
+  width: clamp(400px, 90vw, 500px); /* 400-500px responsive range */
+  padding: 40px; /* Required padding */
+  border-radius: 20px; /* Rounded corners */
+  background: rgba(255, 255, 255, 0.1); /* Glass background */
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.37); /* Subtle shadow */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Subtle shadow */
   position: relative;
-  z-index: 1;                              /* keep card above floating emojis */
+  z-index: 1; /* keep card above floating emojis */
   text-align: center;
   color: #fff;
   /* Gentle floating drift for the whole card */
@@ -442,7 +541,7 @@ body.light-surface button {
 
 /* Floating lettuce icons at top-center, overlapping the card */
 .landing .float-icons {
-  position: fixed;                       /* cover entire viewport */
+  position: fixed; /* cover entire viewport */
   inset: 0;
   transform: none;
   display: block;
@@ -451,15 +550,15 @@ body.light-surface button {
 }
 
 .landing .float-icons .icon {
-  font-size: 24px;                       /* ~24px as requested */
+  font-size: 24px; /* ~24px as requested */
   line-height: 1;
   /* Randomized gentle drift using CSS variables set in JS */
   animation-name: leafRandom;
   animation-duration: var(--dur, 2s);
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  animation-delay: var(--delay, 0s);     /* 0s, .5s, 1s stagger via inline style */
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+  animation-delay: var(--delay, 0s); /* 0s, .5s, 1s stagger via inline style */
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 }
 
 /* Random drift path using per-icon variables:
@@ -468,10 +567,20 @@ body.light-surface button {
    Scale:    --s0/--s1/--s2
 */
 @keyframes leafRandom {
-  0%   { transform: translate(0px, 0px) rotate(var(--r0, 0deg))  scale(var(--s0, 1));    }
-  33%  { transform: translate(var(--x1, 0px), var(--y1, -10px)) rotate(var(--r1, 8deg))  scale(var(--s1, 1.06)); }
-  66%  { transform: translate(var(--x2, 0px), var(--y2, 8px))   rotate(var(--r2, -8deg)) scale(var(--s2, 0.96)); }
-  100% { transform: translate(0px, 0px) rotate(var(--r0, 0deg))  scale(var(--s0, 1));    }
+  0% {
+    transform: translate(0px, 0px) rotate(var(--r0, 0deg)) scale(var(--s0, 1));
+  }
+  33% {
+    transform: translate(var(--x1, 0px), var(--y1, -10px))
+      rotate(var(--r1, 8deg)) scale(var(--s1, 1.06));
+  }
+  66% {
+    transform: translate(var(--x2, 0px), var(--y2, 8px))
+      rotate(var(--r2, -8deg)) scale(var(--s2, 0.96));
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(var(--r0, 0deg)) scale(var(--s0, 1));
+  }
 }
 
 /* Title: white, bold, Arial, size 32px, centered, with emojis inline */
@@ -494,17 +603,17 @@ body.light-surface button {
   --ry: 0deg;
   --mx: 50%;
   --my: 0%;
-  transform: perspective(1000px) rotateX(var(--ry)) rotateY(var(--rx)) translateY(12px) scale(0.98);
+  transform: perspective(1000px) rotateX(var(--ry)) rotateY(var(--rx))
+    translateY(12px) scale(0.98);
   opacity: 0;
-  transition:
-    transform 600ms cubic-bezier(.2,.75,.25,1),
-    box-shadow 600ms cubic-bezier(.2,.75,.25,1),
-    opacity 500ms ease;
+  transition: transform 600ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    box-shadow 600ms cubic-bezier(0.2, 0.75, 0.25, 1), opacity 500ms ease;
 }
 
 /* when JS adds .enter on mount */
 .landing .card.enter {
-  transform: perspective(1000px) rotateX(var(--ry)) rotateY(var(--rx)) translateY(0) scale(1);
+  transform: perspective(1000px) rotateX(var(--ry)) rotateY(var(--rx))
+    translateY(0) scale(1);
   opacity: 1;
 }
 
@@ -515,84 +624,92 @@ body.light-surface button {
   inset: -1px;
   pointer-events: none;
   border-radius: 20px;
-  background:
-    linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0)),
-    radial-gradient(600px 300px at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,0.06), rgba(255,255,255,0) 60%);
-  transition:
-    background-position 200ms ease,
-    opacity 300ms ease;
+  background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0)
+    ),
+    radial-gradient(
+      600px 300px at var(--mx, 50%) var(--my, 0%),
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0) 60%
+    );
+  transition: background-position 200ms ease, opacity 300ms ease;
   opacity: 0.9;
 }
 
 /* Lift and subtle emphasis on hover */
 .landing .card:hover {
-  box-shadow: 0 14px 34px rgba(0,0,0,0.42);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
 }
 
 .landing .title .t-emoji {
-  font-size: 32px;                        /* Larger lettuce emoji before "Welcome" */
+  font-size: 32px; /* Larger lettuce emoji before "Welcome" */
   transform: translateY(2px) rotate(-6deg);
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 }
 
 /* Input field: centered, 80% width, rounded, semi-transparent */
 .landing #user-name-input {
   width: 80%;
-  margin: 20px auto 0;                    /* Margin below title */
+  margin: 20px auto 0; /* Margin below title */
   display: block;
   padding: 12px;
   border-radius: 20px;
   border: none;
   outline: none;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
   text-align: center;
   font-size: 16px;
 }
 
 .landing #user-name-input::placeholder {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* Button: centered, green, rounded, hover darken */
 .landing #start-quiz-button {
-  margin: 20px auto 0;                    /* Margin below input */
+  margin: 20px auto 0; /* Margin below input */
   display: inline-block;
   padding: 12px 40px;
   border-radius: 20px;
-  background: #4CAF50;
+  background: #4caf50;
   color: #fff;
   font-size: 16px;
   border: none;
   cursor: pointer;
-  transition:
-    background 0.3s ease,
-    transform 0.2s ease,
-    box-shadow 0.3s ease;
-  box-shadow: 0 8px 22px rgba(76,175,80,0.35);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 22px rgba(76, 175, 80, 0.35);
 }
 
 /* subtle pulse to invite interaction */
 @keyframes btnPulse {
-  0%, 100% { transform: translateY(0); box-shadow: 0 8px 22px rgba(76,175,80,0.35); }
-  50%      { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(76,175,80,0.42); }
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 8px 22px rgba(76, 175, 80, 0.35);
+  }
+  50% {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(76, 175, 80, 0.42);
+  }
 }
 
 .landing #start-quiz-button:hover {
-  background: #388E3C;                    /* Darken on hover */
+  background: #388e3c; /* Darken on hover */
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(56,142,60,0.45);
+  box-shadow: 0 12px 28px rgba(56, 142, 60, 0.45);
 }
 
 .landing #start-quiz-button:focus-visible {
-  outline: 2px solid rgba(255,255,255,0.7);
+  outline: 2px solid rgba(255, 255, 255, 0.7);
   outline-offset: 3px;
 }
 
 .landing #start-quiz-button:active {
   transform: translateY(0);
 }
-
 
 /* Responsive title size on very small screens */
 @media (max-width: 480px) {
@@ -607,19 +724,19 @@ body.light-surface button {
 /* ===== Question Page Theming (salad backgrounds + contrast) ===== */
 body.question-surface #user-interface h1,
 body.question-surface #user-interface button {
-  color: #fff !important;    /* keep title and buttons white on question pages */
+  color: #fff !important; /* keep title and buttons white on question pages */
   text-shadow: none;
 }
 
 body.question-surface #user-interface ul li {
-  color: #000 !important;    /* answers back to black by request */
+  color: #000 !important; /* answers back to black by request */
 }
 
 /* If the chosen background is very light (lemon/near white), switch to black text */
 body.question-surface.question-light #user-interface h1,
 body.question-surface.question-light #user-interface ul li,
 body.question-surface.question-light #user-interface button {
-  color: #000 !important;    /* improve readability on light backgrounds */
+  color: #000 !important; /* improve readability on light backgrounds */
 }
 
 /* ===== Salad Quiz Landing Hero Enhancements (fresh, modern, fun) ===== */
@@ -646,31 +763,55 @@ body.question-surface.question-light #user-interface button {
 .landing .leaves .leaf {
   display: inline-block;
   line-height: 1;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
   transform-origin: center bottom;
   animation: leafBob var(--dur, 3s) ease-in-out infinite;
   will-change: transform;
 }
 
 @keyframes leafBob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 /* Background particles/waves layer for subtle healthy vibes */
 .bg-particles {
   position: fixed;
   inset: 0;
-  z-index: 0;                /* Below card (z=1) but above ::before/::after (z=-1) */
+  z-index: 0; /* Below card (z=1) but above ::before/::after (z=-1) */
   pointer-events: none;
   opacity: 0.55;
   mix-blend-mode: soft-light;
-  background:
-    radial-gradient(6px 6px at 12% 22%, rgba(255,255,255,0.10), transparent 60%),
-    radial-gradient(8px 8px at 28% 78%, rgba(255,255,255,0.09), transparent 60%),
-    radial-gradient(5px 5px at 68% 30%, rgba(255,255,255,0.10), transparent 60%),
-    radial-gradient(7px 7px at 88% 62%, rgba(255,255,255,0.11), transparent 60%),
-    radial-gradient(6px 6px at 42% 12%, rgba(255,255,255,0.08), transparent 60%);
+  background: radial-gradient(
+      6px 6px at 12% 22%,
+      rgba(255, 255, 255, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      8px 8px at 28% 78%,
+      rgba(255, 255, 255, 0.09),
+      transparent 60%
+    ),
+    radial-gradient(
+      5px 5px at 68% 30%,
+      rgba(255, 255, 255, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      7px 7px at 88% 62%,
+      rgba(255, 255, 255, 0.11),
+      transparent 60%
+    ),
+    radial-gradient(
+      6px 6px at 42% 12%,
+      rgba(255, 255, 255, 0.08),
+      transparent 60%
+    );
   background-repeat: no-repeat;
   animation: particleDrift 24s ease-in-out infinite;
 }
@@ -679,26 +820,25 @@ body.question-surface.question-light #user-interface button {
   0% {
     transform: translateY(0);
     filter: hue-rotate(0deg);
-    background-position:
-      0px 0px,  0px 0px,  0px 0px,  0px 0px,  0px 0px;
+    background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
   }
   50% {
     transform: translateY(-6px);
     filter: hue-rotate(-4deg);
-    background-position:
-      18px -14px, -22px 12px, 16px 9px, -16px -18px, 10px 18px;
+    background-position: 18px -14px, -22px 12px, 16px 9px, -16px -18px,
+      10px 18px;
   }
   100% {
     transform: translateY(0);
     filter: hue-rotate(0deg);
-    background-position:
-      0px 0px,  0px 0px,  0px 0px,  0px 0px,  0px 0px;
+    background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
   }
 }
 
 /* Title typography override to use Poppins (clean, modern) */
 .landing .title {
-  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Start button: large, rounded, green gradient, glowing hover, ripple compatible */
@@ -707,23 +847,23 @@ body.question-surface.question-light #user-interface button {
   padding: 14px 44px;
   border-radius: 28px;
   font-size: 18px;
-  background: linear-gradient(135deg, var(--green-600), var(--green-500)) !important;
+  background: linear-gradient(
+    135deg,
+    var(--green-600),
+    var(--green-500)
+  ) !important;
   color: #ffffff !important;
-  box-shadow: 0 10px 26px rgba(27,94,32,0.45), inset 0 1px 0 rgba(255,255,255,0.25), 0 0 0 0 rgba(102,187,106,0.0);
-  transition:
-    background 220ms ease,
-    transform 160ms ease,
-    box-shadow 240ms ease,
+  box-shadow: 0 10px 26px rgba(27, 94, 32, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 0 0 rgba(102, 187, 106, 0);
+  transition: background 220ms ease, transform 160ms ease, box-shadow 240ms ease,
     filter 200ms ease;
 }
 
 .landing #start-quiz-button:hover {
   background: linear-gradient(135deg, #2e7d32, #1b5e20) !important;
   transform: translateY(-2px);
-  box-shadow:
-    0 18px 36px rgba(27,94,32,0.55),
-    0 0 0 6px rgba(102,187,106,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.22);
+  box-shadow: 0 18px 36px rgba(27, 94, 32, 0.55),
+    0 0 0 6px rgba(102, 187, 106, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
   filter: brightness(1.03);
 }
 
@@ -736,18 +876,25 @@ body.question-surface.question-light #user-interface button {
   width: min(90vw, 460px);
   padding: 14px 18px;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
-  border: 1px solid rgba(255,255,255,0.20);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.08)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #eaf7ea;
   text-align: center;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 1px 0 rgba(0,0,0,0.12);
-  transition: transform 160ms ease, box-shadow 220ms ease, border-color 200ms ease, background 220ms ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 160ms ease, box-shadow 220ms ease,
+    border-color 200ms ease, background 220ms ease;
 }
 
 .landing #user-name-input:focus {
   transform: translateY(-1px) scale(1.02);
-  border-color: rgba(102,187,106,0.70);
-  box-shadow: 0 0 0 6px rgba(102,187,106,0.12), 0 14px 30px rgba(0,0,0,0.25);
+  border-color: rgba(102, 187, 106, 0.7);
+  box-shadow: 0 0 0 6px rgba(102, 187, 106, 0.12),
+    0 14px 30px rgba(0, 0, 0, 0.25);
 }
 
 /* Respect reduced motion preferences */
@@ -782,10 +929,11 @@ body.question-surface.question-light #user-interface button {
 
 /* Clean typography override for the hero title (ensure Poppins is used) */
 #user-interface .landing .title {
-  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    'Helvetica Neue', Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.4px;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 /* Subtitle tone (soft, supportive) */
@@ -801,17 +949,24 @@ body.question-surface.question-light #user-interface button {
   width: min(90vw, 460px);
   padding: 14px 18px;
   border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.22);
-  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.08)
+  );
   color: #eaf7ea;
   text-align: center;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 1px 0 rgba(0,0,0,0.12);
-  transition: transform 160ms ease, box-shadow 220ms ease, border-color 200ms ease, background 220ms ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 160ms ease, box-shadow 220ms ease,
+    border-color 200ms ease, background 220ms ease;
 }
 #user-interface .landing #user-name-input:focus {
   transform: translateY(-1px) scale(1.02);
-  border-color: rgba(102,187,106,0.70);
-  box-shadow: 0 0 0 6px rgba(102,187,106,0.12), 0 14px 30px rgba(0,0,0,0.25);
+  border-color: rgba(102, 187, 106, 0.7);
+  box-shadow: 0 0 0 6px rgba(102, 187, 106, 0.12),
+    0 14px 30px rgba(0, 0, 0, 0.25);
 }
 
 /* Start button: large, rounded, green gradient, glowing hover; ripple already provided by JS */
@@ -820,22 +975,22 @@ body.question-surface.question-light #user-interface button {
   padding: 14px 44px;
   border-radius: 28px;
   font-size: 18px;
-  background: linear-gradient(135deg, var(--green-600), var(--green-500)) !important;
+  background: linear-gradient(
+    135deg,
+    var(--green-600),
+    var(--green-500)
+  ) !important;
   color: #ffffff !important;
-  box-shadow: 0 10px 26px rgba(27,94,32,0.45), inset 0 1px 0 rgba(255,255,255,0.25), 0 0 0 0 rgba(102,187,106,0.0);
-  transition:
-    background 220ms ease,
-    transform 160ms ease,
-    box-shadow 240ms ease,
+  box-shadow: 0 10px 26px rgba(27, 94, 32, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 0 0 rgba(102, 187, 106, 0);
+  transition: background 220ms ease, transform 160ms ease, box-shadow 240ms ease,
     filter 200ms ease;
 }
 #user-interface .landing #start-quiz-button:hover {
   background: linear-gradient(135deg, #2e7d32, #1b5e20) !important;
   transform: translateY(-2px);
-  box-shadow:
-    0 18px 36px rgba(27,94,32,0.55),
-    0 0 0 6px rgba(102,187,106,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.22);
+  box-shadow: 0 18px 36px rgba(27, 94, 32, 0.55),
+    0 0 0 6px rgba(102, 187, 106, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
   filter: brightness(1.03);
 }
 #user-interface .landing #start-quiz-button:active {
@@ -856,28 +1011,28 @@ body.question-surface.question-light #user-interface button {
 /* === Alignment fixes for welcome input + start button === */
 /* B1: We make the card a flex box. This helps us center things inside. */
 #user-interface .landing .card {
-  display: flex;           /* B1: put items in a column */
-  flex-direction: column;  /* B1: vertical layout */
-  align-items: center;     /* B1: center items left-right */
+  display: flex; /* B1: put items in a column */
+  flex-direction: column; /* B1: vertical layout */
+  align-items: center; /* B1: center items left-right */
 }
 
 /* B1: This box holds the input and the start button. We center it. */
 #user-interface .landing .actions {
-  display: flex;           /* B1: stack input and button */
+  display: flex; /* B1: stack input and button */
   flex-direction: column;
   align-items: center;
-  gap: 12px;               /* B1: small space between them */
+  gap: 12px; /* B1: small space between them */
   width: 100%;
-  max-width: 460px;        /* Constrain inner content to card, avoid overflow */
-  margin: 0 auto;          /* Center actions container horizontally */
-  margin-top: auto;        /* B1: push from top */
-  margin-bottom: auto;     /* B1: push from bottom -> moves to center */
+  max-width: 460px; /* Constrain inner content to card, avoid overflow */
+  margin: 0 auto; /* Center actions container horizontally */
+  margin-top: auto; /* B1: push from top */
+  margin-bottom: auto; /* B1: push from bottom -> moves to center */
 }
 
 /* B1: Make input and button same width and centered */
 #user-interface .landing .actions > #user-name-input,
 #user-interface .landing .actions > #start-quiz-button {
-  width: 100%;             /* Fill actions container, respect max-width */
-  margin: 0;               /* Container handles centering */
+  width: 100%; /* Fill actions container, respect max-width */
+  margin: 0; /* Container handles centering */
   display: block;
 }

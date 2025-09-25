@@ -9,7 +9,7 @@
 
 export const quizData = {
   currentQuestionIndex: 0,
-    userName: '', //store user name 
+  userName: '', //store user name
   // All quiz questions
   questions: [
     // EASY
@@ -157,7 +157,9 @@ export const quizData = {
 
   // Calculate the score from each question's selected answer
   score() {
-    return this.questions.reduce((sum, q) => sum + (q.selected === q.correct ? 1 : 0), 0);
+    return this.questions.reduce(
+      (sum, q) => sum + (q.selected === q.correct ? 1 : 0),
+      0
+    );
   },
 };
-

@@ -4,7 +4,6 @@ import { quizData } from '../data.js';
 import { changeBackground } from '../app.js';
 import { createPage } from '../utils/createPage.js';
 
-
 // Show the end page
 export const showEndPage = () => {
   changeBackground(999);
@@ -14,12 +13,15 @@ export const showEndPage = () => {
   // compute score for logic, but do not render it (UI stays 0/total)
   const _score = quizData.score();
 
-  const endElement = createPage('end-page', `
+  const endElement = createPage(
+    'end-page',
+    `
     <h1 class="end-title">Quiz Completed!</h1>
     <p class="end-subtitle">Congratulations, ${quizData.userName}!</p>
     <div class="score-badge">Score: 0 / ${quizData.questions.length}</div>
     <button id="reset-quiz-button" class="end-reset-btn">Reset Quiz</button>
-  `);
+  `
+  );
 
   userInterface.appendChild(endElement);
 

@@ -6,7 +6,9 @@ import { createPage } from '../utils/createPage.js';
  * @returns {Element}
  */
 export const createWelcomeElement = () => {
-  const element = createPage('', String.raw`
+  const element = createPage(
+    '',
+    String.raw`
     <div class="landing">
       <div class="bg-particles" aria-hidden="true"></div>
 
@@ -38,13 +40,15 @@ export const createWelcomeElement = () => {
         </div>
       </div>
     </div>
-  `);
+  `
+  );
 
   // Parallax entrance and tilt effects for the welcome card
   const card = element.querySelector('.card');
   if (card) {
     const reduce =
-      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Smooth entrance
     requestAnimationFrame(() => card.classList.add('enter'));
@@ -58,8 +62,8 @@ export const createWelcomeElement = () => {
         const dx = (ev.clientX - cx) / (rect.width / 2);
         const dy = (ev.clientY - cy) / (rect.height / 2);
         // map -1..1 to degrees
-        const rx = (dx * maxTilt).toFixed(2) + 'deg';   // rotateY
-        const ry = (-dy * maxTilt).toFixed(2) + 'deg';  // rotateX
+        const rx = (dx * maxTilt).toFixed(2) + 'deg'; // rotateY
+        const ry = (-dy * maxTilt).toFixed(2) + 'deg'; // rotateX
         card.style.setProperty('--rx', rx);
         card.style.setProperty('--ry', ry);
 

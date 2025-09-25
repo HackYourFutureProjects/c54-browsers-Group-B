@@ -10,7 +10,6 @@ import { quizData } from '../data.js';
 import { showEndPage } from './endPage.js';
 import { setQuestionTheme, resetQuestionTheme } from '../app.js';
 
-
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
   quizData.questions[questionIndex].selected = selectedOption;
@@ -21,12 +20,12 @@ export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
 
-// Initializes the question page by rendering the current question and answers
-// Handles click events on answers to store selection and show correct/incorrect feedback
+  // Initializes the question page by rendering the current question and answers
+  // Handles click events on answers to store selection and show correct/incorrect feedback
   if (quizData.currentQuestionIndex >= quizData.questions.length) {
-  resetQuestionTheme(); // leaving question surface
-  showEndPage(); // Show the end-of-quiz page if all questions are answered
-  return;
+    resetQuestionTheme(); // leaving question surface
+    showEndPage(); // Show the end-of-quiz page if all questions are answered
+    return;
   }
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
@@ -93,7 +92,7 @@ export const initQuestionPage = () => {
   nextBtn.addEventListener('click', () => {
     const current = quizData.questions[quizData.currentQuestionIndex];
     if (!current.selected) {
-      // No answer chosen: show error state 
+      // No answer chosen: show error state
       nextBtn.classList.add('btn-error', 'shake');
       setTimeout(() => nextBtn.classList.remove('shake'), 450);
       return;
@@ -120,4 +119,3 @@ const avoidQuestion = () => {
 
   initQuestionPage(); // display the new question
 };
-
