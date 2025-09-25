@@ -9,6 +9,7 @@
 
 export const quizData = {
   currentQuestionIndex: 0,
+  userName: '', //store user name
   // All quiz questions
   questions: [
     // EASY
@@ -153,32 +154,12 @@ export const quizData = {
       ],
     },
   ],
-  answers: [],
-  // Save current answers to localStorage
-  saveAnswers(answers) {
-    localStorage.setItem('answers', JSON.stringify(answers));
-    quizData.answers = answers;
-  },
 
-  // Load answers from localStorage
-  loadAnswers() {
-    const saved = localStorage.getItem('answers');
-    if (saved) {
-      quizData.answers = JSON.parse(saved);
-      return quizData.answers;
-    }
-    return [];
-  },
-
-  // Calculate the score based on saved answers
-  score: function () {
-    let score = 0;
-    this.questions.forEach((q, i) => {
-      if (this.answers[i] === q.correct) score++;
-    });
-    return score;
+  // Calculate the score from each question's selected answer
+  score() {
+    return this.questions.reduce(
+      (sum, q) => sum + (q.selected === q.correct ? 1 : 0),
+      0
+    );
   },
 };
-
-// Automatically load any saved answers when script runs
-quizData.loadAnswers();

@@ -5,17 +5,18 @@ import {
   ELEMINATE_TWO_ANSWERS_BUTTON_ID,
   RESTART_QUIZ,
 } from '../constants.js';
+import { createPage } from '../utils/createPage.js';
 
 /**
  * Create a full question element
  * @returns {Element}
  */
 export const createQuestionElement = (question) => {
-  const element = document.createElement('div');
+  return createPage(
+    '',
+    String.raw`
 
-  // I use String.raw just to get fancy colors for the HTML in VS Code.
-  element.innerHTML = String.raw`
-  <button id="${RESTART_QUIZ}">Restart Quiz</button>
+      <button id="${RESTART_QUIZ}">Restart Quiz</button>
     <h1>${question}</h1>
 
     
@@ -30,11 +31,11 @@ export const createQuestionElement = (question) => {
       Avoid question
     </button>
 
-
-  <button id="${ELEMINATE_TWO_ANSWERS_BUTTON_ID}">
+    <button id="${ELEMINATE_TWO_ANSWERS_BUTTON_ID}">
       Hint
     </button>
-  `;
+  `
+  );
 
-  return element;
+  // return element;
 };
