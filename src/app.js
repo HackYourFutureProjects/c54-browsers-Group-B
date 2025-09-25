@@ -16,10 +16,6 @@ const loadApp = () => {
  * - currentQuestionIndex back to 0
  * - clears all selected answers
  */
-export const resetQuizState = () => {
-  quizData.currentQuestionIndex = 0;
-  quizData.questions.forEach((q) => (q.selected = null));
-};
 
 /**
  * Move to next question
@@ -32,6 +28,11 @@ export const goToNextQuestion = () => {
     return true;
   }
   return false;
+};
+
+export const resetQuizState = () => {
+  quizData.currentQuestionIndex = 0;
+  quizData.questions.forEach((q) => (q.selected = null));
 };
 
 /**

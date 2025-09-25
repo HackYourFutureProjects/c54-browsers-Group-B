@@ -3,10 +3,13 @@ import {
   NEXT_QUESTION_BUTTON_ID,
   USER_INTERFACE_ID,
   AVOID_QUESTION_BUTTON_ID,
+  ELEMINATE_TWO_ANSWERS_BUTTON_ID,
+  RESTART_QUIZ,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
+import { resetQuizState } from '../app.js';
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -21,6 +24,7 @@ export const initQuestionPage = () => {
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
   const questionElement = createQuestionElement(currentQuestion.text);
+
   userInterface.appendChild(questionElement);
 
   const answersListElement = document.getElementById(ANSWERS_LIST_ID);
@@ -69,10 +73,21 @@ export const initQuestionPage = () => {
 
       // disabled
       document.getElementById(AVOID_QUESTION_BUTTON_ID).disabled = true;
+      document.getElementById(ELEMINATE_TWO_ANSWERS_BUTTON_ID).disabled = true;
     });
 
     answersListElement.appendChild(answerElement);
   }
+
+  document
+    .getElementById(ELEMINATE_TWO_ANSWERS_BUTTON_ID)
+    .addEventListener('click', () => {
+      const allListItems = Array.from(
+        answersListElement.querySelectorAll('li')
+      );
+      hint(currentQuestion, allListItems);
+      document.getElementById(ELEMINATE_TWO_ANSWERS_BUTTON_ID).disabled = true;
+    });
 
   document
     .getElementById(NEXT_QUESTION_BUTTON_ID)
@@ -81,6 +96,10 @@ export const initQuestionPage = () => {
   document
     .getElementById(AVOID_QUESTION_BUTTON_ID)
     .addEventListener('click', avoidQuestion);
+
+  document
+    .getElementById(RESTART_QUIZ)
+    .addEventListener('click', resetQuizState);
 };
 
 const nextQuestion = () => {
@@ -94,4 +113,18 @@ const avoidQuestion = () => {
   console.log('Question avoided');
 
   initQuestionPage(); // display the new question
+};
+
+const hint = (currentQuestion, allListItems) => {
+  const wrongItems = allListItems.filter((li) => {
+    return li.dataset.key !== currentQuestion.correct;
+  }); //get all the wrong options
+  const elements = new Set();
+
+  while (elements.size < 2) {
+    const randomIndex = Math.floor(Math.random() * wrongItems.length);
+    elements.add(wrongItems[randomIndex]);
+  }
+
+  elements.forEach((ele) => (ele.hidden = true));
 };
