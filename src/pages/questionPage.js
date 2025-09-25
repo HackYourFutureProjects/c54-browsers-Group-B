@@ -66,6 +66,9 @@ export const initQuestionPage = () => {
       allListItems.forEach((li) => {
         li.style.pointerEvents = 'none';
       });
+
+      // disabled
+      document.getElementById(AVOID_QUESTION_BUTTON_ID).disabled = true;
     });
 
     answersListElement.appendChild(answerElement);
