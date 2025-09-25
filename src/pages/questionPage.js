@@ -8,6 +8,7 @@ import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 import { showEndPage } from './endPage.js';
+import { setQuestionTheme, resetQuestionTheme } from '../app.js';
 
 
 // Step 1: Store selected answer
@@ -23,11 +24,15 @@ export const initQuestionPage = () => {
 // Initializes the question page by rendering the current question and answers
 // Handles click events on answers to store selection and show correct/incorrect feedback
   if (quizData.currentQuestionIndex >= quizData.questions.length) {
+  resetQuestionTheme(); // leaving question surface
   showEndPage(); // Show the end-of-quiz page if all questions are answered
   return;
   }
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
+
+  // Apply salad-themed background for this question and manage contrast
+  setQuestionTheme(quizData.currentQuestionIndex);
 
   const questionElement = createQuestionElement(currentQuestion.text);
   userInterface.appendChild(questionElement);
@@ -72,6 +77,10 @@ export const initQuestionPage = () => {
           }
         });
       }
+      const nextBtnEl = document.getElementById(NEXT_QUESTION_BUTTON_ID);
+      if (nextBtnEl) {
+        nextBtnEl.classList.remove('btn-error', 'shake');
+      }
       allListItems.forEach((li) => {
         li.style.pointerEvents = 'none';
       });
@@ -80,9 +89,19 @@ export const initQuestionPage = () => {
     answersListElement.appendChild(answerElement);
   }
 
-  document
-    .getElementById(NEXT_QUESTION_BUTTON_ID)
-    .addEventListener('click', nextQuestion);
+  const nextBtn = document.getElementById(NEXT_QUESTION_BUTTON_ID);
+  nextBtn.addEventListener('click', () => {
+    const current = quizData.questions[quizData.currentQuestionIndex];
+    if (!current.selected) {
+      // No answer chosen: show error state 
+      nextBtn.classList.add('btn-error', 'shake');
+      setTimeout(() => nextBtn.classList.remove('shake'), 450);
+      return;
+    }
+    // Answer chosen: clear error state and proceed
+    nextBtn.classList.remove('btn-error');
+    nextQuestion();
+  });
 
   document
     .getElementById(AVOID_QUESTION_BUTTON_ID)

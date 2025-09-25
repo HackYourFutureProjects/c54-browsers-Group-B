@@ -26,7 +26,7 @@ export const initWelcomePage = () => {
  */
 // Displays the welcome page in the UI and attaches a click listener to the start button
 // When clicked, it starts the quiz and stores the user's name
-const startQuiz = () => { 
+const startQuiz = () => {
   const nameInput = document.getElementById('user-name-input');
   quizData.userName = nameInput.value || 'Mysterious Stranger'; // fallback
   initQuestionPage();

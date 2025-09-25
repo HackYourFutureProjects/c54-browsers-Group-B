@@ -1,42 +1,27 @@
 // src/pages/endPage.js
 import { USER_INTERFACE_ID } from '../constants.js';
 import { quizData } from '../data.js';
-import { initWelcomePage } from './welcomePage.js';
+import { changeBackground } from '../app.js';
+import { createPage } from '../utils/createPage.js';
 
-// Create the end page element
-const createEndElement = (userName, score, totalQuestions) => {
-  const element = document.createElement('div');
-  element.classList.add('end-page');
-
-  element.innerHTML = `
-    <h1>Quiz Completed!</h1>
-    <p>Congratulations, ${userName}!</p>
-    <p>Your score: ${score} / ${totalQuestions}</p>
-    <button id="restart-quiz-button">Restart Quiz</button>
-  `;
-
-  return element;
-};
 
 // Show the end page
 export const showEndPage = () => {
+  changeBackground(999);
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
 
-  const endElement = createEndElement(
-    quizData.userName,
-    quizData.score(),
-    quizData.questions.length
-  );
+  // compute score for logic, but do not render it (UI stays 0/total)
+  const _score = quizData.score();
+
+  const endElement = createPage('end-page', `
+    <h1 class="end-title">Quiz Completed!</h1>
+    <p class="end-subtitle">Congratulations, ${quizData.userName}!</p>
+    <div class="score-badge">Score: 0 / ${quizData.questions.length}</div>
+    <button id="reset-quiz-button" class="end-reset-btn">Reset Quiz</button>
+  `);
 
   userInterface.appendChild(endElement);
 
-  // Restart quiz button
-  const restartButton = document.getElementById('restart-quiz-button');
-  restartButton.addEventListener('click', () => {
-    quizData.currentQuestionIndex = 0;
-    quizData.answers = [];
-    quizData.questions.forEach(q => (q.selected = null));
-    initWelcomePage();
-  });
+  // UI-only Reset button (no behavior by request)
 };
