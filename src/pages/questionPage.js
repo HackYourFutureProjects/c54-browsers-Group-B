@@ -10,8 +10,16 @@ import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 import { showEndPage } from './endPage.js';
-import { setQuestionTheme, resetQuestionTheme, changeBackground } from '../app.js';
-import { incrementCorrect, incrementIncorrect, renderScore } from '../utils/scoreFunctions.js';
+import {
+  setQuestionTheme,
+  resetQuestionTheme,
+  changeBackground,
+} from '../app.js';
+import {
+  incrementCorrect,
+  incrementIncorrect,
+  renderScore,
+} from '../utils/scoreFunctions.js';
 import { initWelcomePage } from './welcomePage.js';
 
 // Step 1: Store selected answer
@@ -34,7 +42,7 @@ export const initQuestionPage = () => {
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
-    // create or get score container
+  // create or get score container
   let scoreContainer = document.getElementById(SCORE_COUNTER_ID);
   if (!scoreContainer) {
     scoreContainer = document.createElement('div');
@@ -52,10 +60,10 @@ export const initQuestionPage = () => {
   userInterface.appendChild(questionElement);
 
   // Reset button behavior
-const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
-if (resetBtn) {
-  resetBtn.addEventListener('click', resetQuiz);
-}
+  const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetQuiz);
+  }
 
   const answersListElement = document.getElementById(ANSWERS_LIST_ID);
 
@@ -110,7 +118,6 @@ if (resetBtn) {
       allListItems.forEach((li) => {
         li.style.pointerEvents = 'none';
       });
-   
 
       // disabled
       document.getElementById(AVOID_QUESTION_BUTTON_ID).disabled = true;
@@ -160,9 +167,8 @@ const resetQuiz = () => {
   console.log('Quiz reset');
   initWelcomePage(); // back to welcome page
 
-
-//RESET background and question theme
+  //RESET background and question theme
   requestAnimationFrame(() => {
-  resetQuestionTheme();
+    resetQuestionTheme();
   });
 };

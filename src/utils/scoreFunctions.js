@@ -1,10 +1,17 @@
 import { quizData } from '../data.js';
 
-export const incrementCorrect = () => { quizData.scoreCorrect++; };
-export const incrementIncorrect = () => { quizData.scoreIncorrect++; };
+export const incrementCorrect = () => {
+  quizData.scoreCorrect++;
+};
+export const incrementIncorrect = () => {
+  quizData.scoreIncorrect++;
+};
 
 //reset scores to zero
-export const resetScores = () => { quizData.scoreCorrect = 0; quizData.scoreIncorrect = 0; };
+export const resetScores = () => {
+  quizData.scoreCorrect = 0;
+  quizData.scoreIncorrect = 0;
+};
 
 // set scores to specific values
 export const setScores = (correct, incorrect) => {

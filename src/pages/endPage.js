@@ -27,13 +27,13 @@ export const showEndPage = () => {
   userInterface.appendChild(endElement);
 
   // UI-only Reset button (no behavior by request)
-    const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
-     if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        quizData.scoreCorrect = 0;
-        quizData.scoreIncorrect = 0;
-        quizData.currentQuestionIndex = 0;
-        initWelcomePage();
-      });
-    }
-}
+  const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      quizData.scoreCorrect = 0;
+      quizData.scoreIncorrect = 0;
+      quizData.currentQuestionIndex = 0;
+      initWelcomePage();
+    });
+  }
+};
