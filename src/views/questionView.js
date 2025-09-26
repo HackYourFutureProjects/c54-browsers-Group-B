@@ -2,6 +2,7 @@ import { ANSWERS_LIST_ID } from '../constants.js';
 import {
   NEXT_QUESTION_BUTTON_ID,
   AVOID_QUESTION_BUTTON_ID,
+  RESET_QUIZ_BUTTON_ID,
 } from '../constants.js';
 import { createPage } from '../utils/createPage.js';
 
@@ -19,6 +20,7 @@ export const createQuestionElement = (question) => {
 
     <button id="${NEXT_QUESTION_BUTTON_ID}">Next question</button>
     <button id="${AVOID_QUESTION_BUTTON_ID}">Avoid question</button>
+    <button id="${RESET_QUIZ_BUTTON_ID}">Reset Quiz</button>
   `
   );
 };

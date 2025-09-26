@@ -8,6 +8,10 @@
 */
 
 export const quizData = {
+  scoreCorrect: 0,          // quantity of correct answers
+  scoreIncorrect: 0,        // quantity of incorrect answers
+  maxQuestions: 10,       // maximum number of questions in the quiz
+
   currentQuestionIndex: 0,
   userName: '', //store user name
   // All quiz questions
