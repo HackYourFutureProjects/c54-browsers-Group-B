@@ -3,12 +3,24 @@ import {
   NEXT_QUESTION_BUTTON_ID,
   USER_INTERFACE_ID,
   AVOID_QUESTION_BUTTON_ID,
+  SCORE_COUNTER_ID,
+  RESET_QUIZ_BUTTON_ID,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 import { showEndPage } from './endPage.js';
-import { setQuestionTheme, resetQuestionTheme } from '../app.js';
+import {
+  setQuestionTheme,
+  resetQuestionTheme,
+  changeBackground,
+} from '../app.js';
+import {
+  incrementCorrect,
+  incrementIncorrect,
+  renderScore,
+} from '../utils/scoreFunctions.js';
+import { initWelcomePage } from './welcomePage.js';
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -30,11 +42,28 @@ export const initQuestionPage = () => {
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
+  // create or get score container
+  let scoreContainer = document.getElementById(SCORE_COUNTER_ID);
+  if (!scoreContainer) {
+    scoreContainer = document.createElement('div');
+    scoreContainer.id = SCORE_COUNTER_ID;
+    userInterface.appendChild(scoreContainer);
+  }
+
+  // show current score
+  renderScore();
+
   // Apply salad-themed background for this question and manage contrast
   setQuestionTheme(quizData.currentQuestionIndex);
 
   const questionElement = createQuestionElement(currentQuestion.text);
   userInterface.appendChild(questionElement);
+
+  // Reset button behavior
+  const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetQuiz);
+  }
 
   const answersListElement = document.getElementById(ANSWERS_LIST_ID);
 
@@ -66,8 +95,10 @@ export const initQuestionPage = () => {
 
       if (isCorrect) {
         clickedLi.style.backgroundColor = 'green';
+        incrementCorrect();
       } else {
         clickedLi.style.backgroundColor = 'red';
+        incrementIncorrect();
 
         //highlight the correct answer
         allListItems.forEach((li) => {
@@ -80,6 +111,10 @@ export const initQuestionPage = () => {
       if (nextBtnEl) {
         nextBtnEl.classList.remove('btn-error', 'shake');
       }
+
+      // re-render score
+      renderScore();
+
       allListItems.forEach((li) => {
         li.style.pointerEvents = 'none';
       });
@@ -110,15 +145,30 @@ export const initQuestionPage = () => {
     .addEventListener('click', avoidQuestion);
 };
 
-const nextQuestion = () => {
+function nextQuestion() {
   quizData.currentQuestionIndex += 1;
   initQuestionPage();
-};
+}
 
 const avoidQuestion = () => {
   // go to the next question
   quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
+  incrementIncorrect();
   console.log('Question avoided');
 
   initQuestionPage(); // display the new question
+};
+
+//reset button behavior
+const resetQuiz = () => {
+  quizData.scoreCorrect = 0;
+  quizData.scoreIncorrect = 0;
+  quizData.currentQuestionIndex = 0;
+  console.log('Quiz reset');
+  initWelcomePage(); // back to welcome page
+
+  //RESET background and question theme
+  requestAnimationFrame(() => {
+    resetQuestionTheme();
+  });
 };
