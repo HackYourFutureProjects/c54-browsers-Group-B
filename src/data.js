@@ -23,6 +23,7 @@ export const quizData = {
       links: [
         { text: 'Wikipedia', href: 'https://en.wikipedia.org/wiki/Paris' },
       ],
+      status: null,
     },
     {
       id: 'Q2',
@@ -37,6 +38,7 @@ export const quizData = {
           href: 'https://solarsystem.nasa.gov/planets/mars/overview/',
         },
       ],
+      status: null,
     },
     {
       id: 'Q3',
@@ -46,6 +48,7 @@ export const quizData = {
       correct: 'a',
       selected: null,
       links: [],
+      status: null,
     },
 
     // MEDIUM
@@ -67,6 +70,7 @@ export const quizData = {
           href: 'https://www.biography.com/writer/william-shakespeare',
         },
       ],
+      status: null,
     },
     {
       id: 'Q5',
@@ -86,6 +90,7 @@ export const quizData = {
           href: 'https://www.britannica.com/science/photosynthesis',
         },
       ],
+      status: null,
     },
     {
       id: 'Q6',
@@ -100,6 +105,7 @@ export const quizData = {
           href: 'https://www.history.com/topics/world-war-ii/world-war-ii-history',
         },
       ],
+      status: null,
     },
 
     // HARD
@@ -121,6 +127,7 @@ export const quizData = {
           href: 'https://www.louvre.fr/en/explore/the-palace/mona-lisa',
         },
       ],
+      status: null,
     },
     {
       id: 'Q8',
@@ -130,7 +137,9 @@ export const quizData = {
       correct: 'c',
       selected: null,
       links: [],
+      status: null,
     },
+
     {
       id: 'Q9',
       difficulty: 'hard',
@@ -141,6 +150,7 @@ export const quizData = {
       links: [
         { text: 'Periodic Table', href: 'https://www.ptable.com/Element/Au' },
       ],
+      status: null,
     },
     {
       id: 'Q10',
@@ -152,6 +162,7 @@ export const quizData = {
       links: [
         { text: 'Olympics', href: 'https://www.olympic.org/athens-1896' },
       ],
+      status: null,
     },
   ],
 
