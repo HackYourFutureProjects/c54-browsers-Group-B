@@ -4,8 +4,6 @@
  */
 export const createAnswerElement = (key, answerText) => {
   const element = document.createElement('li');
-  element.innerHTML = String.raw`
-    ${key.toUpperCase()}: ${answerText}
-  `;
+  element.innerHTML = `${key.toUpperCase()}: ${answerText}`;
   return element;
 };

@@ -1,82 +1,141 @@
 // src/pages/endPage.js
-import { USER_INTERFACE_ID, RESET_QUIZ_BUTTON_ID } from '../constants.js';
-import { quizData } from '../data.js';
-import { changeBackground } from '../app.js';
 import { createPage } from '../utils/createPage.js';
-import { initWelcomePage } from './welcomePage.js';
+import { changeBackground, resetQuizState, clearState } from '../app.js';
+import { USER_INTERFACE_ID, PRIZE_STEPS } from '../constants.js';
+import { quizData } from '../data.js';
 
-// Map score ranges to GIFs and texts
-const getResultData = (score) => {
-  if (score === 10)
+// Select a result GIF based on final score (use classic thresholds; fallback to ratio)
+function getResultGif(score, total) {
+  const ratio = score / total;
+  if (ratio >= 0.9)
+    return { file: 'champ.gif', alt: 'Champion', text: 'Champion! 🏆' };
+  if (ratio >= 0.6)
+    return { file: 'fighter.gif', alt: 'Fighter', text: 'Fighter! ⭐️' };
+  if (ratio >= 0.3)
     return {
-      gif: 'public/champ.gif',
-      text: "You're basically a mermaid of knowledge!",
+      file: 'halfchamp.gif',
+      alt: 'Half Champion',
+      text: 'Half Champion! 💪',
     };
-  if (score >= 7 && score < 10)
-    return {
-      gif: 'public/halfchamp.gif',
-      text: 'Smart… but not the smartest!',
-    };
-  if (score >= 5 && score < 7)
-    return {
-      gif: 'public/fighter.gif',
-      text: "Chill… everything's fine in the flames of new information!",
-    };
-  if (score >= 2 && score < 5)
-    return {
-      gif: 'public/halfloser.gif',
-      text: 'You tried… but the knowledge had other plans!',
-    };
-  if (score < 2)
-    return {
-      gif: 'public/loser.gif',
-      text: 'Oof… that went completely wrong!',
-    };
-  console.log('Score out of range:', score);
-};
+  return { file: 'loser.gif', alt: 'Try Again', text: 'Try Again! 🥲' };
+}
 
-// Show the end page
 export const showEndPage = () => {
   changeBackground(999);
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
 
-  const totalQuestions = quizData.questions.length;
-  const finalScore = quizData.scoreCorrect;
-  const resultData = getResultData(finalScore, totalQuestions);
+  const total = quizData.questions.length;
+  const score = quizData.score();
+  const { headline, subline } = buildEndCopy(score, total, quizData.userName);
+  const prize = getPrize(score, total);
 
-  // HTML block for GIF and text
-  const gifBlock = `
-  <div class="result-gif-container">
-    <img src="${resultData.gif}" alt="Result GIF" class="result-gif" />
-    <p class="result-text">${resultData.text}</p>
-  </div>
-`;
+  const prizeHtml = prize
+    ? `
+      <div class="prize-box" role="status" aria-live="polite">
+        <div class="prize-emoji">${prize.emoji}</div>
+        <div class="prize-name">${prize.name}</div>
+        <p class="prize-desc">${prize.desc}</p>
+      </div>
+    `
+    : `
+      <div class="prize-box prize-none">
+        <div class="prize-emoji">🥲</div>
+        <div class="prize-name">No Prize</div>
+        <p class="prize-desc">3+ wrong answers locked the prize vault. Try again!</p>
+      </div>
+    `;
 
-  // Get result data based on score
-  const _score = quizData.score();
+  const gif = getResultGif(score, total);
+  const gifHtml = gif
+    ? `
+      <div class="result-gif-container">
+        <img class="result-gif" src="public/${gif.file}" alt="${gif.alt}" />
+        <div class="result-text">${gif.text}</div>
+      </div>
+    `
+    : '';
 
   const endElement = createPage(
     'end-page',
     `
-    ${gifBlock}
-    <h1 class="end-title">Quiz Completed!</h1>
-    <p class="end-subtitle">Congratulations, ${quizData.userName}!</p>
-    <div class="score-badge">Score: ${quizData.scoreCorrect} / ${quizData.questions.length}</div>
-    <button id="reset-quiz-button" class="end-reset-btn">Reset Quiz</button>
-  `
+      <h1 class="end-title">Quiz Completed!</h1>
+      <p class="end-subtitle">${headline}</p>
+      <div class="score-badge">Score: ${score} / ${total}</div>
+      <p class="end-copy">${subline}</p>
+      ${prizeHtml}
+      ${gifHtml}
+      <button id="play-again-button" class="end-reset-btn">Play Again</button>
+    `
   );
 
   userInterface.appendChild(endElement);
 
-  // reset button behavior
-  const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      quizData.scoreCorrect = 0;
-      quizData.scoreIncorrect = 0;
-      quizData.currentQuestionIndex = 0;
-      initWelcomePage();
+  // Reset quiz and go back to welcome
+  const playAgainBtn = document.getElementById('play-again-button');
+  if (playAgainBtn) {
+    playAgainBtn.addEventListener('click', async () => {
+      clearState();
+      resetQuizState();
+      changeBackground(-1);
+      const module = await import('./welcomePage.js');
+      module.initWelcomePage();
     });
   }
 };
+
+function buildEndCopy(score, total, name) {
+  const user = name || 'Champion';
+
+  if (score === total) {
+    return {
+      headline: `Flawless victory, ${user}!`,
+      subline:
+        'You answered everything correctly. Are you secretly a quiz AI? 🏆',
+    };
+  }
+  if (score >= total - 1) {
+    return {
+      headline: `So close to legend status, ${user}!`,
+      subline: "One more and we'd rename the quiz after you. ⭐️",
+    };
+  }
+  if (score >= total - 2) {
+    return {
+      headline: `Strong run, ${user}!`,
+      subline: 'Two answers shy of eternal bragging rights.',
+    };
+  }
+  if (score >= Math.ceil(total * 0.6)) {
+    return {
+      headline: `Solid performance, ${user}!`,
+      subline: 'The scoreboard approves. The crowd goes mild. 👏',
+    };
+  }
+  if (score >= Math.ceil(total * 0.3)) {
+    return {
+      headline: `Nice attempt, ${user}!`,
+      subline: 'You showed sparks. Recharge and give it another go.',
+    };
+  }
+  if (score >= 1) {
+    return {
+      headline: `A spark of genius, ${user}!`,
+      subline: 'Every epic starts with one correct click. Keep going. ⚡️',
+    };
+  }
+  return {
+    headline: `We saw nothing, ${user}.`,
+    subline: 'The scoreboard remains mysterious. Try again!',
+  };
+}
+
+function getPrize(score, total) {
+  const wrongCount = total - score;
+  if (wrongCount >= 3) {
+    return null; // No prize if 3+ wrong answers
+  }
+
+  const prizeIndex = Math.min(score - 1, PRIZE_STEPS.length - 1);
+  return prizeIndex >= 0 ? PRIZE_STEPS[prizeIndex] : null;
+}

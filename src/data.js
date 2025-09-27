@@ -13,7 +13,8 @@ export const quizData = {
   maxQuestions: 10, // maximum number of questions in the quiz
 
   currentQuestionIndex: 0,
-  userName: '', //store user name
+  userName: '', // store user name
+  hintsLeft: 3, // eliminate-two-answers uses remaining across the whole quiz
   // All quiz questions
   questions: [
     // EASY
