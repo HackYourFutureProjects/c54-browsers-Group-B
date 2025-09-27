@@ -9,6 +9,7 @@ import {
   PROGRESS_MARKS_ID,
   SALAD_BOWL_ID,
   PRIZE_POP_ID,
+  RESET_QUIZ_BUTTON_ID,
 } from '../constants.js';
 import { createPage } from '../utils/createPage.js';
 
@@ -56,11 +57,12 @@ export const createQuestionElement = (question, scoreText) => {
     <!-- List for answer options -->
     <ul id="${ANSWERS_LIST_ID}"></ul>
 
-    <!-- Buttons for actions: hint, next, avoid -->
+    <!-- Buttons for actions: hint, next, avoid, reset -->
     <div class="actions-row">
       <button id="${ELIMINATE_TWO_ANSWERS_BUTTON_ID}" class="btn-info">Hint</button>
       <button id="${NEXT_QUESTION_BUTTON_ID}" class="btn-primary">Next question</button>
       <button id="${AVOID_QUESTION_BUTTON_ID}" class="btn-warning">Avoid question</button>
+      <button id="${RESET_QUIZ_BUTTON_ID}">Reset Quiz</button>
     </div>
   `
   );

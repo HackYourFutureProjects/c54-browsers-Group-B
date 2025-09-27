@@ -12,6 +12,7 @@ import {
   PRIZE_POP_ID,
   PRIZE_STEPS,
   SALAD_BOWL_INGREDIENTS,
+  RESET_QUIZ_BUTTON_ID,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
@@ -25,6 +26,7 @@ import {
   resetQuizState,
   changeBackground,
 } from '../app.js';
+import { initWelcomePage } from './welcomePage.js';
 
 // Makes the number change smoothly from old value to new value
 function animateNumber(el, from, to, duration = 450, formatter) {
@@ -552,6 +554,12 @@ export const initQuestionPage = () => {
   if (avoidBtn) {
     avoidBtn.addEventListener('click', avoidQuestion);
   }
+
+  // Reset button behavior
+  const resetBtn = document.getElementById(RESET_QUIZ_BUTTON_ID);
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetQuiz);
+  }
 };
 
 const nextQuestion = () => {
@@ -657,4 +665,18 @@ const hint = (currentQuestion, allListItems, hintTypeIndex) => {
     const firstLetter = correctAnswer.charAt(0).toUpperCase();
     alert(`The correct answer starts with: ${firstLetter}`);
   }
+};
+
+//reset button behavior
+const resetQuiz = () => {
+  quizData.scoreCorrect = 0;
+  quizData.scoreIncorrect = 0;
+  quizData.currentQuestionIndex = 0;
+  console.log('Quiz reset');
+  initWelcomePage(); // back to welcome page
+
+  //RESET background and question theme
+  requestAnimationFrame(() => {
+    resetQuestionTheme();
+  });
 };

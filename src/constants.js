@@ -60,3 +60,6 @@ export const ACCENT_CYCLING_ENABLED = true;
 // Name of the CSS variable to use as the default accent when cycling is disabled
 // Must correspond to one of: '--accent-lemon', '--accent-carrot', '--accent-fresh-green', '--accent-tomato'
 export const DEFAULT_ACCENT_NAME = '--accent-fresh-green';
+
+// Reset feature (from main)
+export const RESET_QUIZ_BUTTON_ID = 'reset-quiz-button';
