@@ -5,6 +5,9 @@ import {
   START_QUIZ_BUTTON_ID,
   NEXT_QUESTION_BUTTON_ID,
   AVOID_QUESTION_BUTTON_ID,
+  STORAGE_KEY,
+  ACCENT_CYCLING_ENABLED,
+  DEFAULT_ACCENT_NAME,
 } from './constants.js';
 
 /**
@@ -13,9 +16,28 @@ import {
  * - Shows welcome page
  */
 const loadApp = () => {
-  resetQuizState();
   setupUIEnhancements();
-  // Welcome background on initial load
+  try {
+    setEmojiFavicon('🥗');
+  } catch {}
+
+  // Try to hydrate saved progress; if available resume where the user left off
+  const hydrated = hydrateFromStorage();
+
+  if (hydrated) {
+    const idx = quizData.currentQuestionIndex;
+    if (idx >= quizData.questions.length) {
+      changeBackground(999);
+      import('./pages/endPage.js').then((m) => m.showEndPage());
+    } else {
+      changeBackground(Math.max(0, idx));
+      import('./pages/questionPage.js').then((m) => m.initQuestionPage());
+    }
+    return;
+  }
+
+  // No saved state -> fresh start
+  resetQuizState();
   changeBackground(-1);
   initWelcomePage();
 };
@@ -25,6 +47,20 @@ const loadApp = () => {
  * - currentQuestionIndex back to 0
  * - clears all selected answers
  */
+export const resetQuizState = () => {
+  quizData.currentQuestionIndex = 0;
+  quizData.questions.forEach((q) => {
+    q.selected = null;
+    q.usedHint = false;
+    q.avoided = false;
+  });
+  quizData.hintsLeft = 3;
+  try {
+    console.log('score:', quizData.score());
+  } catch {
+    /* ignore */
+  }
+};
 
 /**
  * Move to next question
@@ -39,13 +75,107 @@ export const goToNextQuestion = () => {
   return false;
 };
 
-export const resetQuizState = () => {
-  quizData.currentQuestionIndex = 0;
-  quizData.questions.forEach((q) => (q.selected = null));
-  quizData.score = 0;
-  console.log('score: ', quizData.score);
-  initWelcomePage();
-};
+/**
+ * Persistence helpers
+ * - saveState(): persist minimal quiz state to localStorage
+ * - loadState(): read persisted state or return null
+ * - clearState(): remove persisted data
+ * - hydrateFromStorage(): apply persisted data into quizData, return true if applied
+ */
+export function saveState() {
+  try {
+    const payload = {
+      userName: quizData.userName || '',
+      currentQuestionIndex: quizData.currentQuestionIndex,
+      hintsLeft: typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3,
+      selectedMap: Object.fromEntries(
+        quizData.questions.map((q) => [q.id, q.selected ?? null])
+      ),
+      usedHintMap: Object.fromEntries(
+        quizData.questions.map((q) => [q.id, !!q.usedHint])
+      ),
+      avoidedMap: Object.fromEntries(
+        quizData.questions.map((q) => [q.id, !!q.avoided])
+      ),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch (e) {
+    console.warn('saveState failed:', e);
+  }
+}
+
+export function clearState() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+export function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function hydrateFromStorage() {
+  const state = loadState();
+  if (!state || !Array.isArray(quizData.questions)) return false;
+
+  if (typeof state.userName === 'string') {
+    quizData.userName = state.userName;
+  }
+  if (typeof state.hintsLeft === 'number') {
+    quizData.hintsLeft = Math.max(0, Math.min(3, state.hintsLeft));
+  }
+
+  if (typeof state.currentQuestionIndex === 'number') {
+    quizData.currentQuestionIndex = Math.max(
+      0,
+      Math.min(state.currentQuestionIndex, quizData.questions.length)
+    );
+  }
+
+  if (state.selectedMap && typeof state.selectedMap === 'object') {
+    for (const q of quizData.questions) {
+      if (
+        q &&
+        q.id &&
+        Object.prototype.hasOwnProperty.call(state.selectedMap, q.id)
+      ) {
+        q.selected = state.selectedMap[q.id];
+      }
+    }
+  }
+  if (state.usedHintMap && typeof state.usedHintMap === 'object') {
+    for (const q of quizData.questions) {
+      if (
+        q &&
+        q.id &&
+        Object.prototype.hasOwnProperty.call(state.usedHintMap, q.id)
+      ) {
+        q.usedHint = !!state.usedHintMap[q.id];
+      }
+    }
+  }
+  if (state.avoidedMap && typeof state.avoidedMap === 'object') {
+    for (const q of quizData.questions) {
+      if (
+        q &&
+        q.id &&
+        Object.prototype.hasOwnProperty.call(state.avoidedMap, q.id)
+      ) {
+        q.avoided = !!state.avoidedMap[q.id];
+      }
+    }
+  }
+
+  return true;
+}
 
 /**
  * UI Enhancement helpers (styling & transitions only)
@@ -117,11 +247,33 @@ export function changeBackground(index) {
   document.documentElement.style.setProperty('--bg-gradient', gradient);
 
   // Toggle high-contrast text when the background is very light
-  // We consider the 4th gradient (index 3, with yellow) and the end screen (999) as "light"
   const isLightSurface =
     index === 999 ||
     (typeof index === 'number' && Math.abs(index) % gradients.length === 3);
   document.body.classList.toggle('light-surface', !!isLightSurface);
+
+  // Also set a sensible accent for non-question screens so glow effects feel cohesive
+  try {
+    const root = document.documentElement;
+    const get = (name, fallback) =>
+      getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+    const accents = [
+      get('--accent-lemon', '#FFD93D'),
+      get('--accent-carrot', '#FFA62B'),
+      get('--accent-fresh-green', '#6BCB77'),
+      get('--accent-tomato', '#FF6B6B'),
+    ];
+    if (index === -1) {
+      // welcome: fresh, inviting
+      root.style.setProperty('--answer-hover-accent', accents[2]);
+    } else if (index === 999) {
+      // end: celebratory
+      root.style.setProperty('--answer-hover-accent', accents[0]);
+    } else if (typeof index === 'number') {
+      const accent = accents[Math.abs(index) % accents.length];
+      root.style.setProperty('--answer-hover-accent', accent);
+    }
+  } catch {}
 }
 
 /**
@@ -194,18 +346,18 @@ function observeUI() {
         ) {
           // Welcome
           changeBackground(-1);
-        } else if (
-          node.querySelector &&
-          node.querySelector('#restart-quiz-button')
-        ) {
-          // End
-          changeBackground(999);
+          try {
+            setEmojiFavicon('🥗');
+          } catch {}
         } else if (
           node.querySelector &&
           node.querySelector(`#${NEXT_QUESTION_BUTTON_ID}`)
         ) {
           // Question
           changeBackground(quizData.currentQuestionIndex);
+          try {
+            setEmojiFavicon('🥬');
+          } catch {}
         }
       });
     }
@@ -222,7 +374,6 @@ function setupUIEnhancements() {
   observeUI();
 }
 
-// Question page theming: rotate through salad colors and manage contrast
 // Question page theming: rotate through salad colors and manage contrast
 export function setQuestionTheme(index) {
   const gradients = [
@@ -247,6 +398,34 @@ export function setQuestionTheme(index) {
     chosen.includes('#FFFDE7') ||
     chosen.includes('#FFFFFF');
   document.body.classList.toggle('question-light', !!isLight);
+
+  // Cycle answer hover accent per question for playful variety
+  try {
+    const root = document.documentElement;
+    const get = (name, fallback) =>
+      getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+    const accents = [
+      get('--accent-lemon', '#FFD93D'),
+      get('--accent-carrot', '#FFA62B'),
+      get('--accent-fresh-green', '#6BCB77'),
+      get('--accent-tomato', '#FF6B6B'),
+    ];
+    const accent = accents[Math.abs(index) % accents.length];
+    root.style.setProperty('--answer-hover-accent', accent);
+
+    // Rotate progress gradient colors per question for subtle variety
+    const r0 = Math.abs(index) % accents.length;
+    const seq = [
+      accents[r0],
+      accents[(r0 + 1) % accents.length],
+      accents[(r0 + 2) % accents.length],
+      accents[(r0 + 3) % accents.length],
+    ];
+    root.style.setProperty('--progress-c1', seq[0]);
+    root.style.setProperty('--progress-c2', seq[1]);
+    root.style.setProperty('--progress-c3', seq[2]);
+    root.style.setProperty('--progress-c4', seq[3]);
+  } catch {}
 }
 
 /**

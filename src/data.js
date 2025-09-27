@@ -9,7 +9,8 @@
 
 export const quizData = {
   currentQuestionIndex: 0,
-  userName: '', //store user name
+  userName: '', // store user name
+  hintsLeft: 3, // eliminate-two-answers uses remaining across the whole quiz
   // All quiz questions
   questions: [
     // EASY
