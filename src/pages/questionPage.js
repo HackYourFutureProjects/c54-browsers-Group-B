@@ -12,6 +12,7 @@ import { quizData } from '../data.js';
 import { resetQuizState } from '../app.js';
 import { showEndPage } from './endPage.js';
 import { setQuestionTheme, resetQuestionTheme } from '../app.js';
+import { createProgressBarElement } from '../views/progressBarView.js';
 
 // Step 1: Store selected answer
 const storeAnswer = (questionIndex, selectedOption) => {
@@ -37,8 +38,28 @@ export const initQuestionPage = () => {
   setQuestionTheme(quizData.currentQuestionIndex);
 
   const questionElement = createQuestionElement(currentQuestion.text);
-
+  console.log(questionElement);
   userInterface.appendChild(questionElement);
+
+  // append progress bar
+  const progressBarElement = createProgressBarElement(quizData);
+  console.log('Progress Bar: ', progressBarElement);
+  questionElement.before(progressBarElement);
+
+  // check if status is correct give it a beckground color of blue
+  const allCircles = document.querySelectorAll('.circle');
+  //loop
+  quizData.questions.forEach((ele, index) => {
+    console.log('index', index);
+    console.log('status', ele.status);
+    if (ele.status === 'correct') {
+      const circle = allCircles[index];
+      circle.style.backgroundColor = 'blue';
+    } else if (ele.status === 'wrong') {
+      const circle = allCircles[index];
+      circle.style.backgroundColor = 'red';
+    }
+  });
 
   const answersListElement = document.getElementById(ANSWERS_LIST_ID);
 
@@ -70,8 +91,11 @@ export const initQuestionPage = () => {
 
       if (isCorrect) {
         clickedLi.style.backgroundColor = 'green';
+        quizData.questions[quizData.currentQuestionIndex].status = 'correct';
       } else {
         clickedLi.style.backgroundColor = 'red';
+        // activeCircle.classList.add('wrong');
+        quizData.questions[quizData.currentQuestionIndex].status = 'wrong';
 
         //highlight the correct answer
         allListItems.forEach((li) => {
