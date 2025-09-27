@@ -1036,3 +1036,59 @@ body.question-surface.question-light #user-interface button {
   margin: 0; /* Container handles centering */
   display: block;
 }
+
+/*initial design for the progress-bar*/
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: gray;
+  transform: translateY(-50%);
+  z-index: 0; /* keep behind circles */
+}
+
+.progress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: green;
+  transform: translateY(-50%);
+  transition: width 0.4s ease;
+  z-index: 0; /* keep behind circles */
+}
+
+.circle {
+  position: relative; /* makes its own layer */
+  z-index: 1; /* always above the line */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid green;
+
+  display: flex; /* centers text */
+  justify-content: center;
+  align-items: center;
+
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  transition: 0.4s ease;
+}
+
+.circle.active {
+  width: 28px;
+  height: 28px;
+  border-color: rgba(163, 40, 40, 0.64);
+}
