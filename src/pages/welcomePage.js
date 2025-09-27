@@ -107,23 +107,7 @@ export const initWelcomePage = () => {
 // When clicked, it starts the quiz and stores the user's name
 const startQuiz = () => {
   const nameInput = document.getElementById('user-name-input');
-  quizData.userName = nameInput.value || 'Mysterious Stranger'; // fallback
-
-  // Persist initial state (username + current index + selections)
-  try {
-    const payload = {
-      userName: quizData.userName || '',
-      currentQuestionIndex: quizData.currentQuestionIndex,
-      hintsLeft:
-        typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3,
-      selectedMap: Object.fromEntries(
-        quizData.questions.map((q) => [q.id, q.selected ?? null])
-      ),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  } catch {
-    // ignore storage errors
-  }
+  quizData.userName = nameInput.value;
 
   initQuestionPage();
 };

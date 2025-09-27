@@ -87,7 +87,8 @@ export function saveState() {
     const payload = {
       userName: quizData.userName || '',
       currentQuestionIndex: quizData.currentQuestionIndex,
-      hintsLeft: typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3,
+      hintsLeft:
+        typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3,
       selectedMap: Object.fromEntries(
         quizData.questions.map((q) => [q.id, q.selected ?? null])
       ),
@@ -124,53 +125,21 @@ export function loadState() {
 
 function hydrateFromStorage() {
   const state = loadState();
-  if (!state || !Array.isArray(quizData.questions)) return false;
+  if (!state) return false;
 
-  if (typeof state.userName === 'string') {
-    quizData.userName = state.userName;
-  }
-  if (typeof state.hintsLeft === 'number') {
-    quizData.hintsLeft = Math.max(0, Math.min(3, state.hintsLeft));
-  }
+  quizData.userName = state.userName;
+  quizData.hintsLeft = state.hintsLeft;
+  quizData.currentQuestionIndex = state.currentQuestionIndex;
 
-  if (typeof state.currentQuestionIndex === 'number') {
-    quizData.currentQuestionIndex = Math.max(
-      0,
-      Math.min(state.currentQuestionIndex, quizData.questions.length)
-    );
-  }
-
-  if (state.selectedMap && typeof state.selectedMap === 'object') {
-    for (const q of quizData.questions) {
-      if (
-        q &&
-        q.id &&
-        Object.prototype.hasOwnProperty.call(state.selectedMap, q.id)
-      ) {
-        q.selected = state.selectedMap[q.id];
-      }
+  for (const q of quizData.questions) {
+    if (state.selectedMap) {
+      q.selected = state.selectedMap[q.id];
     }
-  }
-  if (state.usedHintMap && typeof state.usedHintMap === 'object') {
-    for (const q of quizData.questions) {
-      if (
-        q &&
-        q.id &&
-        Object.prototype.hasOwnProperty.call(state.usedHintMap, q.id)
-      ) {
-        q.usedHint = !!state.usedHintMap[q.id];
-      }
+    if (state.usedHintMap) {
+      q.usedHint = state.usedHintMap[q.id];
     }
-  }
-  if (state.avoidedMap && typeof state.avoidedMap === 'object') {
-    for (const q of quizData.questions) {
-      if (
-        q &&
-        q.id &&
-        Object.prototype.hasOwnProperty.call(state.avoidedMap, q.id)
-      ) {
-        q.avoided = !!state.avoidedMap[q.id];
-      }
+    if (state.avoidedMap) {
+      q.avoided = state.avoidedMap[q.id];
     }
   }
 
@@ -439,44 +408,17 @@ export function resetQuestionTheme() {
 }
 
 // Generate a favicon from an emoji and set it as the page icon
-export function setEmojiFavicon(emoji) {
+export function setEmojiFavicon(_) {
   try {
-    const canvas = document.createElement('canvas');
-    const size = 64;
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-
-    // transparent background
-    ctx.clearRect(0, 0, size, size);
-    // draw emoji centered
-    ctx.font =
-      '48px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",system-ui,sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(emoji, size / 2, size / 2);
-
-    const url = canvas.toDataURL('image/png');
-
     let link = document.querySelector('link[rel="icon"]');
     if (!link) {
       link = document.createElement('link');
       link.rel = 'icon';
       document.head.appendChild(link);
     }
-    link.href = url;
-  } catch (e) {
-    // Fallback: SVG data URL with emoji glyph
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="48">${emoji}</text></svg>`;
-    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    let link = document.querySelector('link[rel="icon"]');
-    if (!link) {
-      link = document.createElement('link');
-      link.rel = 'icon';
-      document.head.appendChild(link);
-    }
-    link.href = url;
-  }
+    // Always use the provided static favicon file
+    link.href = './public/favicon.ico';
+  } catch {}
 }
 
 // Run app on page load

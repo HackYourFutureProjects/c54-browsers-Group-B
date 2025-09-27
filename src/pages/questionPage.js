@@ -46,30 +46,28 @@ function animateNumber(el, from, to, duration = 450, formatter) {
   requestAnimationFrame(frame); // Starts the animation
 }
 
-// Money-based prize removed (no currency display)
-
-// Money-based earnings removed
-
 // Counts how many questions user answered
 function countAnswered() {
-  return quizData.questions.reduce((n, q) => n + (q.selected ? 1 : 0), 0); // Adds 1 for each selected answer
+  return quizData.questions.reduce((n, q) => n + (q.selected ? 1 : 0), 0);
 }
 
 // Counts how many wrong answers user has
 function countWrong() {
-  return Math.max(0, countAnswered() - quizData.score()); // Wrong = answered minus correct score
+  return countAnswered() - quizData.score();
 }
 
 // Updates the progress bar to show how many questions done
 function updateProgressBar() {
   const fill = document.getElementById(PROGRESS_FILL_ID); // Gets the progress fill element
-  if (!fill) return; // Stops if no element
-  const total = quizData.questions.length || 0; // Total questions
-  const answered = countAnswered(); // How many answered
-  const pct = total ? Math.round((answered / total) * 100) : 0; // Percentage done
-  fill.style.width = pct + '%'; // Sets bar width
-  fill.setAttribute('aria-valuenow', String(pct)); // Accessibility update
-  // Updates prize marks too
+  // If a classic progress bar exists, update it. Otherwise, still update dots.
+  if (fill) {
+    const total = quizData.questions.length || 0; // Total questions
+    const answered = countAnswered(); // How many answered
+    const pct = total ? Math.round((answered / total) * 100) : 0; // Percentage done
+    fill.style.width = pct + '%'; // Sets bar width
+    fill.setAttribute('aria-valuenow', String(pct)); // Accessibility update
+  }
+  // Always update progress dots, even when bar is hidden/removed
   try {
     updateProgressMarks();
   } catch {}
@@ -99,8 +97,7 @@ function buildProgressMarks() {
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('span');
     dot.className = 'ball';
-    const left = total <= 1 ? 0 : (i / (total - 1)) * 100;
-    dot.style.left = left + '%';
+    // Positioning is handled by flex layout in CSS; no left offset needed
     dot.dataset.index = String(i);
     cont.appendChild(dot);
   }
@@ -320,7 +317,7 @@ const storeAnswer = (questionIndex, selectedOption) => {
     saveState();
   } catch {}
   updateScoreIndicator(prevScore); // Updates score
-  updateProgressBar(); // Updates progress
+  updateProgressBar(); // Updates dots (and legacy bar if present)
   updateSaladBowl(); // Updates bowl
   showPrizePop(wasCorrect); // Shows prize or fail
 };
@@ -356,7 +353,7 @@ export const initQuestionPage = () => {
   // Adds floating items and updates displays
   ensureFloatingIngredients(); // Floating salad
   buildProgressMarks(); // Progress marks
-  updateProgressBar(); // Progress bar
+  updateProgressBar(); // Progress dots
   updateSaladBowl(); // Salad bowl
 
   // Updates score display
@@ -466,7 +463,7 @@ export const initQuestionPage = () => {
       nextBtnEl.classList.remove('btn-error', 'shake');
     }
     updateScoreIndicator(); // Updates score
-    updateProgressBar(); // Updates progress
+    updateProgressBar(); // Updates progress dots
     updateSaladBowl(); // Updates bowl for consistency
   }
 
@@ -475,8 +472,8 @@ export const initQuestionPage = () => {
     let hintUsed = false;
 
     const refreshEliminateUI = () => {
-      const hintsLeft = typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3;
-      eliminateBtn.textContent = 'Hint';
+      const hintsLeft = quizData.hintsLeft ?? 3;
+      eliminateBtn.textContent = `Hint (${hintsLeft} left)`;
       const shouldDisable = hintUsed || !!currentQuestion.selected;
       eliminateBtn.disabled = shouldDisable;
       if (hintUsed) {
@@ -492,17 +489,21 @@ export const initQuestionPage = () => {
     eliminateBtn.addEventListener('click', () => {
       if (eliminateBtn.disabled) return;
 
-      const hintsLeftRaw =
-        typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3;
+      const hintsLeftRaw = quizData.hintsLeft ?? 3;
 
       // No hints left: show red error feedback with existing animation and exit
       if (hintsLeftRaw <= 0) {
         eliminateBtn.classList.add('btn-error', 'shake');
-        setTimeout(() => eliminateBtn.classList.remove('shake', 'btn-error'), 460);
+        setTimeout(
+          () => eliminateBtn.classList.remove('shake', 'btn-error'),
+          460
+        );
         return;
       }
 
-      const allListItems = Array.from(answersListElement.querySelectorAll('li'));
+      const allListItems = Array.from(
+        answersListElement.querySelectorAll('li')
+      );
 
       // Always use "eliminate two wrong answers"
       hint(currentQuestion, allListItems, 0);
@@ -624,58 +625,44 @@ const avoidQuestion = () => {
   }
 };
 
-const hint = (currentQuestion, allListItems, hintTypeIndex) => {
+const hint = (currentQuestion, allListItems) => {
   if (currentQuestion) currentQuestion.usedHint = true;
-  if (hintTypeIndex === 0) {
-    // Eliminate 2 wrong answers
-    const wrongItems = allListItems.filter((li) => {
-      return li.dataset.key !== currentQuestion.correct;
-    });
-    const elements = new Set();
+  const wrongItems = allListItems.filter((li) => {
+    return li.dataset.key !== currentQuestion.correct;
+  });
+  const elements = new Set();
 
-    while (elements.size < 2) {
-      const randomIndex = Math.floor(Math.random() * wrongItems.length);
-      elements.add(wrongItems[randomIndex]);
-    }
-
-    elements.forEach((ele) => {
-      ele.classList.add('eliminate-out');
-      ele.setAttribute('aria-hidden', 'true');
-      ele.style.pointerEvents = 'none';
-      ele.addEventListener(
-        'animationend',
-        () => {
-          ele.hidden = true;
-        },
-        { once: true }
-      );
-    });
-  } else if (hintTypeIndex === 1) {
-    // Show Link
-    if (currentQuestion.links && currentQuestion.links.length > 0) {
-      const link = currentQuestion.links[0];
-      alert(`Helpful link: ${link.text}\n${link.href}`);
-    } else {
-      alert('No helpful link available for this question.');
-    }
-  } else if (hintTypeIndex === 2) {
-    // First Letter
-    const correctKey = currentQuestion.correct;
-    const correctAnswer = currentQuestion.answers[correctKey];
-    const firstLetter = correctAnswer.charAt(0).toUpperCase();
-    alert(`The correct answer starts with: ${firstLetter}`);
+  while (elements.size < 2) {
+    const randomIndex = Math.floor(Math.random() * wrongItems.length);
+    elements.add(wrongItems[randomIndex]);
   }
+
+  elements.forEach((ele) => {
+    ele.classList.add('eliminate-out');
+    ele.style.pointerEvents = 'none';
+    ele.addEventListener(
+      'animationend',
+      () => {
+        ele.hidden = true;
+      },
+      { once: true }
+    );
+  });
 };
 
 //reset button behavior
 const resetQuiz = () => {
-  quizData.scoreCorrect = 0;
-  quizData.scoreIncorrect = 0;
-  quizData.currentQuestionIndex = 0;
-  console.log('Quiz reset');
-  initWelcomePage(); // back to welcome page
+  // Clear any persisted state and reset in-memory quiz data
+  try {
+    clearState();
+  } catch {}
+  resetQuizState();
 
-  //RESET background and question theme
+  // Return to welcome screen with default background
+  changeBackground(-1);
+  initWelcomePage();
+
+  // RESET background and question theme styling hooks (safeguard)
   requestAnimationFrame(() => {
     resetQuestionTheme();
   });
