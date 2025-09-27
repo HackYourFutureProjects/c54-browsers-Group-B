@@ -34,7 +34,6 @@ export const createQuestionElement = (question, scoreText) => {
     <!-- Header with question title, score, and hint tracker -->
     <div class="quiz-header">
       <h1>${title}</h1>
-      <h1>${title}</h1>
       <div id="${SCORE_INDICATOR_ID}" class="score-widget" role="status" aria-live="polite">
         <span class="score-label">Score</span>
         <div class="score-values">
@@ -44,14 +43,11 @@ export const createQuestionElement = (question, scoreText) => {
         </div>
       </div>
       <div id="hint-tracker" class="hint-tracker" role="status" aria-live="polite">
-      <div id="hint-tracker" class="hint-tracker" role="status" aria-live="polite">
         <span class="hint-label">Hints</span>
         <span class="hint-used">0/3</span>
       </div>
     </div>
 
-    <!-- Progress marks (no bar) -->
-    <div id="${PROGRESS_MARKS_ID}" class="progress-marks"></div>
     <!-- Progress marks (no bar) -->
     <div id="${PROGRESS_MARKS_ID}" class="progress-marks"></div>
 
@@ -66,10 +62,6 @@ export const createQuestionElement = (question, scoreText) => {
 
     <!-- Buttons for actions: hint, next, avoid, reset -->
     <div class="actions-row">
-      <button id="${ELIMINATE_TWO_ANSWERS_BUTTON_ID}" class="btn-info" type="button">Hint</button>
-      <button id="${NEXT_QUESTION_BUTTON_ID}" class="btn-primary" type="button">Next question</button>
-      <button id="${AVOID_QUESTION_BUTTON_ID}" class="btn-warning" type="button">Avoid question</button>
-      <button id="${RESET_QUIZ_BUTTON_ID}" type="button">Reset Quiz</button>
       <button id="${ELIMINATE_TWO_ANSWERS_BUTTON_ID}" class="btn-info" type="button">Hint</button>
       <button id="${NEXT_QUESTION_BUTTON_ID}" class="btn-primary" type="button">Next question</button>
       <button id="${AVOID_QUESTION_BUTTON_ID}" class="btn-warning" type="button">Avoid question</button>

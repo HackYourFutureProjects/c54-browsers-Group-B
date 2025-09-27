@@ -79,7 +79,9 @@ function updateProgressBar() {
   // Always update progress dots, even when bar is hidden/removed
   try {
     updateProgressMarks();
-  } catch {}
+  } catch (error) {
+    console.warn('Progress mark refresh failed:', error);
+  }
 }
 
 // Updates the salad bowl to show prizes from correct answers
@@ -485,11 +487,9 @@ export const initQuestionPage = () => {
     let hintUsed = false;
 
     const refreshEliminateUI = () => {
-      const hintsLeft = quizData.hintsLeft ?? 3;
-      eliminateBtn.textContent = `Hint (${hintsLeft} left)`;
-      const hintsLeft =
+      const hintsRemaining =
         typeof quizData.hintsLeft === 'number' ? quizData.hintsLeft : 3;
-      eliminateBtn.textContent = `Hint (${hintsLeft} left)`;
+      eliminateBtn.textContent = `Hint (${hintsRemaining} left)`;
       const shouldDisable = hintUsed || !!currentQuestion.selected;
       eliminateBtn.disabled = shouldDisable;
       if (hintUsed) {
@@ -514,16 +514,9 @@ export const initQuestionPage = () => {
           () => eliminateBtn.classList.remove('shake', 'btn-error'),
           460
         );
-        setTimeout(
-          () => eliminateBtn.classList.remove('shake', 'btn-error'),
-          460
-        );
         return;
       }
 
-      const allListItems = Array.from(
-        answersListElement.querySelectorAll('li')
-      );
       const allListItems = Array.from(
         answersListElement.querySelectorAll('li')
       );

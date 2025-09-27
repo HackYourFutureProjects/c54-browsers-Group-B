@@ -56,16 +56,6 @@ export const showEndPage = () => {
     `
     : '';
 
-  const gif = getResultGif(score, total);
-  const gifHtml = gif
-    ? `
-      <div class="result-gif-container">
-        <img class="result-gif" src="public/${gif.file}" alt="${gif.alt}" />
-        <div class="result-text">${gif.text}</div>
-      </div>
-    `
-    : '';
-
   const endElement = createPage(
     'end-page',
     `
@@ -74,7 +64,6 @@ export const showEndPage = () => {
       <div class="score-badge">Score: ${score} / ${total}</div>
       <p class="end-copy">${subline}</p>
       ${prizeHtml}
-      ${gifHtml}
       ${gifHtml}
       <button id="play-again-button" class="end-reset-btn">Play Again</button>
     `

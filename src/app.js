@@ -19,7 +19,9 @@ const loadApp = () => {
   setupUIEnhancements();
   try {
     setEmojiFavicon('🥗');
-  } catch {}
+  } catch (error) {
+    console.warn('Failed to set favicon:', error);
+  }
 
   // Try to hydrate saved progress; if available resume where the user left off
   const hydrated = hydrateFromStorage();
@@ -57,8 +59,8 @@ export const resetQuizState = () => {
   quizData.hintsLeft = 3;
   try {
     console.log('score:', quizData.score());
-  } catch {
-    /* ignore */
+  } catch (error) {
+    console.warn('Failed to log score:', error);
   }
 };
 
