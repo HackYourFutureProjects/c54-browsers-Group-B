@@ -4,6 +4,48 @@ import { changeBackground, resetQuizState, clearState } from '../app.js';
 import { USER_INTERFACE_ID, PRIZE_STEPS } from '../constants.js';
 import { quizData } from '../data.js';
 
+// Select a result GIF based on final score (use classic thresholds; fallback to ratio)
+function getResultGif(score, total) {
+  if (typeof score !== 'number' || typeof total !== 'number' || total <= 0) {
+    return null;
+  }
+  // Explicit mapping when total is 10 (classic flow)
+  if (total === 10) {
+    if (score >= 10)
+      return { file: 'champ.gif', alt: 'Champion', text: 'Champion! 🏆' };
+    if (score >= 9)
+      return { file: 'fighter.gif', alt: 'Fighter', text: 'Fighter! ⭐️' };
+    if (score >= 6)
+      return {
+        file: 'halfchamp.gif',
+        alt: 'Half Champion',
+        text: 'Half Champion! 💪',
+      };
+    if (score >= 3)
+      return {
+        file: 'halfloser.gif',
+        alt: 'Half Loser',
+        text: 'Keep Going! 🌱',
+      };
+    return { file: 'loser.gif', alt: 'Try Again', text: 'Try Again! 🥲' };
+  }
+  // Ratio-based fallback for other totals
+  const r = score / total;
+  if (r >= 1)
+    return { file: 'champ.gif', alt: 'Champion', text: 'Champion! 🏆' };
+  if (r >= 0.9)
+    return { file: 'fighter.gif', alt: 'Fighter', text: 'Fighter! ⭐️' };
+  if (r >= 0.6)
+    return {
+      file: 'halfchamp.gif',
+      alt: 'Half Champion',
+      text: 'Half Champion! 💪',
+    };
+  if (r >= 0.3)
+    return { file: 'halfloser.gif', alt: 'Half Loser', text: 'Keep Going! 🌱' };
+  return { file: 'loser.gif', alt: 'Try Again', text: 'Try Again! 🥲' };
+}
+
 export const showEndPage = () => {
   changeBackground(999);
   const userInterface = document.getElementById(USER_INTERFACE_ID);
@@ -30,6 +72,16 @@ export const showEndPage = () => {
       </div>
     `;
 
+  const gif = getResultGif(score, total);
+  const gifHtml = gif
+    ? `
+      <div class="result-gif-container">
+        <img class="result-gif" src="public/${gif.file}" alt="${gif.alt}" />
+        <div class="result-text">${gif.text}</div>
+      </div>
+    `
+    : '';
+
   const endElement = createPage(
     'end-page',
     `
@@ -38,6 +90,7 @@ export const showEndPage = () => {
       <div class="score-badge">Score: ${score} / ${total}</div>
       <p class="end-copy">${subline}</p>
       ${prizeHtml}
+      ${gifHtml}
       <button id="play-again-button" class="end-reset-btn">Play Again</button>
     `
   );
