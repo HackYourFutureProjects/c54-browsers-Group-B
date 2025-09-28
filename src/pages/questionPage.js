@@ -116,6 +116,19 @@ function buildProgressMarks() {
   updateProgressMarks();
 }
 
+// when the user clicks on the circle, he can go to the question
+const clickCircles = (quizData) => {
+  const cont = document.getElementById(PROGRESS_MARKS_ID);
+  if (!cont) return;
+  const dots = cont.querySelectorAll('.ball');
+  Array.from(dots).forEach((dot, index) => {
+    dot.addEventListener('click', function () {
+      quizData.currentQuestionIndex = index;
+      initQuestionPage();
+    });
+  });
+};
+
 // Updates which marks are done or current
 function updateProgressMarks() {
   const cont = document.getElementById(PROGRESS_MARKS_ID);
@@ -329,6 +342,7 @@ const storeAnswer = (questionIndex, selectedOption) => {
     saveState();
   } catch {}
   updateScoreIndicator(prevScore); // Updates score
+
   updateProgressBar(); // Updates dots (and legacy bar if present)
   updateProgressBar(); // Updates dots (and legacy bar if present)
   updateSaladBowl(); // Updates bowl
@@ -366,6 +380,7 @@ export const initQuestionPage = () => {
   // Adds floating items and updates displays
   ensureFloatingIngredients(); // Floating salad
   buildProgressMarks(); // Progress marks
+  clickCircles(quizData);
   updateProgressBar(); // Progress dots
   updateProgressBar(); // Progress dots
   updateSaladBowl(); // Salad bowl
