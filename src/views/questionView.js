@@ -12,13 +12,13 @@ import {
 import { createPage } from '../utils/createPage.js';
 
 // Escape HTML entities to safely render user-provided text
-const escapeHTML = (str) =>
-  String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+// const escapeHTML = (str) =>
+//   String(str)
+//     .replace(/&/g, '&amp;')
+//     .replace(/</g, '&lt;')
+//     .replace(/>/g, '&gt;')
+//     .replace(/"/g, '&quot;')
+//     .replace(/'/g, '&#039;');
 
 export const createQuestionElement = (question, scoreText) => {
   // Gets current score and total from text

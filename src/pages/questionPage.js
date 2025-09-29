@@ -5,7 +5,6 @@ import {
   AVOID_QUESTION_BUTTON_ID,
   ELIMINATE_TWO_ANSWERS_BUTTON_ID,
   SCORE_INDICATOR_ID,
-  PROGRESS_BAR_ID,
   PROGRESS_FILL_ID,
   PROGRESS_MARKS_ID,
   SALAD_BOWL_ID,
@@ -21,7 +20,6 @@ import {
   setQuestionTheme,
   resetQuestionTheme,
   saveState,
-  fadeTransition,
   clearState,
   resetQuizState,
   changeBackground,
@@ -160,6 +158,14 @@ function updateProgressMarks() {
   dots.forEach((dot, idx) => {
     if (idx >= total) return;
     const q = quizData.questions[idx];
+
+    if (idx === quizData.currentQuestionIndex) {
+      dot.classList.add('active');
+      dot.textContent = idx + 1;
+      // alert(idx);
+    } else {
+      dot.classList.remove('active');
+    }
 
     // Determine state
     let cls = 'state-unanswered';
@@ -627,12 +633,12 @@ const avoidQuestion = () => {
     items.forEach((li) => (li.style.pointerEvents = 'none'));
 
     // mark correct answer briefly
-    items.forEach((li) => {
-      if (li.dataset.key === current.correct) {
-        li.style.backgroundColor = 'green';
-        li.setAttribute('data-badge', '✓');
-      }
-    });
+    // items.forEach((li) => {
+    //   if (li.dataset.key === current.correct) {
+    //     li.style.backgroundColor = 'green';
+    //     li.setAttribute('data-badge', '✓');
+    //   }
+    // });
 
     const avoid = document.getElementById(AVOID_QUESTION_BUTTON_ID);
     if (avoid) avoid.disabled = true;
