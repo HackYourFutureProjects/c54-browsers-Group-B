@@ -406,7 +406,7 @@ export const initQuestionPage = () => {
   // Updates hint count shown
   const tracker = document.getElementById('hint-tracker'); // Hint tracker
   if (tracker) {
-    const used = 3 - (quizData.hintsLeft || 3); // How many used
+    const used = 3 - (quizData.hintsLeft || 0); // How many used
     tracker.innerHTML = `
       <span class="hint-label">Hints</span>
       <span class="hint-used">${used}/3</span>
