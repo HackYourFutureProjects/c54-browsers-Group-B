@@ -116,6 +116,30 @@ function buildProgressMarks() {
   updateProgressMarks();
 }
 
+// when the user clicks on the circle, he can go to the question
+const clickCircles = (quizData) => {
+  const cont = document.getElementById(PROGRESS_MARKS_ID);
+  if (!cont) return;
+  const dots = cont.querySelectorAll('.ball');
+  Array.from(dots).forEach((dot, index) => {
+    dot.addEventListener('click', function () {
+      quizData.currentQuestionIndex = index;
+
+      console.log(this.classList);
+      const avoided = this.classList.contains('state-avoided');
+      console.log(avoided, this.classList);
+      const q = quizData.questions[index];
+      if (q && q.avoided && q.selected != null) {
+        q.avoided = false;
+        saveState();
+        updateProgressMarks();
+      }
+
+      initQuestionPage();
+    });
+  });
+};
+
 // Updates which marks are done or current
 function updateProgressMarks() {
   const cont = document.getElementById(PROGRESS_MARKS_ID);
@@ -322,6 +346,10 @@ const storeAnswer = (questionIndex, selectedOption) => {
     selectedOption === quizData.questions[questionIndex].correct; // Checks if correct
 
   quizData.questions[questionIndex].selected = selectedOption; // Saves choice
+
+  if (quizData.questions[questionIndex].avoided)
+    quizData.questions[questionIndex].avoided = false;
+
   console.log(`Question ${questionIndex + 1} selected:`, selectedOption); // Logs choice
 
   // Saves state and updates displays
@@ -329,6 +357,7 @@ const storeAnswer = (questionIndex, selectedOption) => {
     saveState();
   } catch {}
   updateScoreIndicator(prevScore); // Updates score
+
   updateProgressBar(); // Updates dots (and legacy bar if present)
   updateProgressBar(); // Updates dots (and legacy bar if present)
   updateSaladBowl(); // Updates bowl
@@ -366,6 +395,7 @@ export const initQuestionPage = () => {
   // Adds floating items and updates displays
   ensureFloatingIngredients(); // Floating salad
   buildProgressMarks(); // Progress marks
+  clickCircles(quizData);
   updateProgressBar(); // Progress dots
   updateProgressBar(); // Progress dots
   updateSaladBowl(); // Salad bowl
@@ -376,7 +406,7 @@ export const initQuestionPage = () => {
   // Updates hint count shown
   const tracker = document.getElementById('hint-tracker'); // Hint tracker
   if (tracker) {
-    const used = 3 - (quizData.hintsLeft || 3); // How many used
+    const used = 3 - (quizData.hintsLeft || 0); // How many used
     tracker.innerHTML = `
       <span class="hint-label">Hints</span>
       <span class="hint-used">${used}/3</span>

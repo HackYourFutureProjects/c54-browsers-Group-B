@@ -1983,3 +1983,12 @@ button.hint-used::before {
   }
 }
 /*******************************/
+
+/*@Alaa*/
+.progress-marks {
+  pointer-events: auto;
+}
+.progress-marks .ball {
+  pointer-events: auto;
+  cursor: pointer;
+}
