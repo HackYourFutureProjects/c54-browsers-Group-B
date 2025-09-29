@@ -124,6 +124,17 @@ const clickCircles = (quizData) => {
   Array.from(dots).forEach((dot, index) => {
     dot.addEventListener('click', function () {
       quizData.currentQuestionIndex = index;
+
+      console.log(this.classList);
+      const avoided = this.classList.contains('state-avoided');
+      console.log(avoided, this.classList);
+      const q = quizData.questions[index];
+      if (q && q.avoided && q.selected != null) {
+        q.avoided = false;
+        saveState();
+        updateProgressMarks();
+      }
+
       initQuestionPage();
     });
   });
@@ -335,6 +346,10 @@ const storeAnswer = (questionIndex, selectedOption) => {
     selectedOption === quizData.questions[questionIndex].correct; // Checks if correct
 
   quizData.questions[questionIndex].selected = selectedOption; // Saves choice
+
+  if (quizData.questions[questionIndex].avoided)
+    quizData.questions[questionIndex].avoided = false;
+
   console.log(`Question ${questionIndex + 1} selected:`, selectedOption); // Logs choice
 
   // Saves state and updates displays
